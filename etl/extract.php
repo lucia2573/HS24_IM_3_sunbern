@@ -4,7 +4,7 @@
 function fetchWeatherData($lat, $lon) {
     // URL für den cURL-Request
     $url = "https://currentuvindex.com/api/v1/uvi?latitude=$lat&longitude=$lon";
-   // $url = "https://currentuvindex.com/api/v1/uvi?latitude=40.6943&longitude=-73.9249";
+  
 
     // Initialisiert eine cURL-Sitzung
     $ch = curl_init($url);
