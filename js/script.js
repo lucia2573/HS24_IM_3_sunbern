@@ -1,11 +1,11 @@
 console.log('Hello, world');
 
 // Funktion, die Daten von unload.php abruft
-async function fetchUVData() {
+async function fetchUVData(route) {
     console.log("Starte Anfrage an unload.php");
 
     try {
-        const response = await fetch(`etl/unload.php`); // Hole die Daten ohne Route
+        const response = await fetch(`etl/unload.php?route=${route}`); // Hole die Daten mit Route
         if (!response.ok) {
             throw new Error('Fehler beim Abrufen der UV-Daten');
         }
@@ -35,9 +35,10 @@ function processUVData(data) {
 
     // Annahme: Die UV-Daten enthalten Objekte mit dem Feld `now_uvi`
     const uvValues = data.map(item => parseFloat(item.now_uvi)); // Alle UV-Indizes als Zahlen
+    console.log("UV-Indizes:", uvValues);
     const uvSum = uvValues.reduce((acc, uv) => acc + uv, 0); // Summe der UV-Indizes
     window.uvIndex = (uvSum / uvValues.length).toFixed(2); // Durchschnitt des UV-Index auf 2 Dezimalstellen
-    console.log(`Durchschnittlicher UV-Index: ${window.uvIndex}`);
+    console.log(`Aktueller UV-Index: ${window.uvIndex}`);
 
     // Zeige den aktuellen UV-Index an
     displayUVIndex(window.uvIndex);
@@ -57,48 +58,43 @@ function calculateSPF(distance, skinType) {
 
     // Berechnung des Sonnenschutzfaktors
     const spf = (travelTime / (protectionTime / 60)) * window.uvIndex; // Formel für SPF
-    console.log(`Berechneter Sonnenschutzfaktor (SPF): ${spf}`);
-    const resultDiv = document.getElementById("result");
-    resultDiv.innerHTML = `
-        <p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor.toFixed(2)}</p>`;
-
-    // Zuweisung des SPF basierend auf dem UV-Index und Hauttyp
-    if (skinType === 1) { // Hauttyp 1
-        return (window.uvIndex >= 3) ? 30 : 0; // Niedriger UV-Index = kein Schutz erforderlich
-    } else if (skinType === 2) { // Hauttyp 2
-        return (window.uvIndex >= 3) ? 15 : 0;
-    } else if (skinType === 3) { // Hauttyp 3
-        return (window.uvIndex >= 6) ? 15 : 0;
-    } else if (skinType === 4) { // Hauttyp 4
-        return (window.uvIndex >= 8) ? 15 : 0;
-    } else if (skinType === 5) { // Hauttyp 5
-        return (window.uvIndex >= 11) ? 15 : 0;
-    } else if (skinType === 6) { // Hauttyp 6
-        return (window.uvIndex >= 11) ? 15 : 0;
-    }
-
-    return 0; // Standardwert
+    console.log(`Empfohlener Sonnenschutzfaktor (SPF): ${spf}`);
+    return spf;
 }
 
 // Event Listener für den Button
 document.getElementById("calculateButton").addEventListener("click", async function () {
     const skinType = parseInt(document.getElementById("skinType").value);
-    const route = document.getElementById("route").value; // Route ist hier noch da, falls du sie brauchst
+    const route = document.getElementById("route").value; // Route wird hier verwendet
 
     console.log(`Berechnung gestartet: Hauttyp ${skinType}, Route ${route}`);
 
     // Berechnung der Distanz basierend auf der Route
     const distance = getDistance(route);
-    await fetchUVData(); // Jetzt ohne Route
+    await fetchUVData(route); // Hole die UV-Daten mit der ausgewählten Route
+
+    const resultDiv = document.getElementById("result");
 
     // Berechnung des Sonnenschutzfaktors
     const sunscreenFactor = calculateSPF(distance, skinType);
-    
+
     // Ausgabe der Ergebnisse (Sonnenschutzfaktor)
-   // const resultDiv = document.getElementById("result");
-   // resultDiv.innerHTML = `
-   //     <p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor.toFixed(2)}</p>
-   // `;
+    let protectionMessage = "";
+
+    // Bedingungen für den Schutztext basierend auf SPF
+    if (sunscreenFactor < 20) {
+        protectionMessage = "Kein Schutz erforderlich.";
+    } else if (sunscreenFactor < 30) {
+        protectionMessage = "Es wäre empfehlenswert, sich mit 20 SPF einzucremen.";
+    } else if (sunscreenFactor < 60) {
+        protectionMessage = "Es wäre empfehlenswert, sich mit 30 SPF einzucremen.";
+    } else {
+        protectionMessage = "Es wäre empfehlenswert, sich mit 50 SPF einzucremen.";
+    }
+
+    // Ausgabe des empfohlenen Sonnenschutzfaktors und der Schutznachricht
+    resultDiv.innerHTML = `<p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor.toFixed(2)}</p>`;
+    resultDiv.innerHTML += `<p>${protectionMessage}</p>`;
 });
 
 // Funktion zur Bestimmung der Strecke basierend auf der Route

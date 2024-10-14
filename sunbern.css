@@ -1,0 +1,62 @@
+body {
+    background-color: #F8EDC7;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    padding: 0;
+    margin: 0;
+}
+
+/* Container für die übereinanderliegenden Wellenbilder */
+#bilder {
+    position: fixed; /* Festes Positionieren, damit es über anderen Elementen liegt */
+    top: 0; /* Beginnt direkt am oberen Rand */
+    left: 0;
+    width: 100%;
+    height: 1080px; /* Passe die Höhe entsprechend der Anzahl der Wellen an */
+    z-index: 5; /* Höherer z-index, um über Header und anderen Elementen zu liegen */
+}
+
+/* Übereinander liegende und leicht versetzte Wellenbilder */
+#bilder img {
+    position: absolute; /* Bilder übereinander stapeln */
+    width: 100%; /* Zieht das Bild über die volle Breite */
+    height: auto; /* Beibehaltung des Seitenverhältnisses */
+    left: 50%; /* Horizontal zentrieren */
+    transform: translateX(-50%); /* Korrektur der Zentrierung */
+}
+
+/* Erste Welle */
+#bilder img:nth-child(1) {
+    top: 0px; /* Oberste Welle */
+    z-index: 1;
+}
+
+/* Zweite Welle */
+#bilder img:nth-child(2) {
+    top: 2px; /* Leicht nach unten versetzt */
+    z-index: 2;
+}
+
+/* Dritte Welle */
+#bilder img:nth-child(3) {
+    top: 10px; /* Weiter nach unten versetzt */
+    z-index: 3;
+}
+
+/* Vierte Welle */
+#bilder img:nth-child(4) {
+    top: 15px; /* Noch weiter nach unten versetzt */
+    z-index: 4; /* Unterste Welle */
+}
+
+/* Restlicher Inhalt mit höherem z-index */
+#content,
+#calculateButton,
+select,
+label,
+p {
+    position: relative; /* Stelle sicher, dass diese Elemente relativ positioniert sind */
+    z-index: 10; /* Setze den z-index höher als den des Bildcontainers */
+}

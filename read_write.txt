@@ -1,0 +1,544 @@
+<?php
+
+require_once 'config.php';
+
+try {
+    // Create a new PDO instance using the values from config.php
+    $pdo = new PDO($dsn, $username, $password, $options);
+
+    // Define the SQL query
+    $sql = "SELECT * FROM Notes";
+
+    // Prepare the statement
+    $stmt = $pdo->prepare($sql);
+
+    // Execute the query
+    $stmt->execute();
+
+    // Fetch all results
+    $result = $stmt->fetchAll();
+
+    // Check if any results were returned
+    if ($result) {
+        // Loop through the results and print each row
+        foreach ($result as $row) {
+            echo "ID: " . $row['ID'] . " - Note: " . $row['Notiz'] . "<br>";
+        }
+    } else {
+        echo "Keine Ergebnisse gefunden";
+    }
+
+} catch (PDOException $e) {
+    // If an error occurs, display the error message
+    die("Fehler bei der Verbindung zur Datenbank: " . $e->getMessage());
+}
+
+echo "Hello World!";
+
+
+?>
+
+
+
+
+<?php
+
+$transformedData = include('transform.php');
+include ('config.php');
+
+print_r($transformedData) ; 
+?> 
+
+print_r($transformedData) ; 
+
+ _________
+
+
+ js
+
+
+ console.log('Hello, world');
+
+// Funktion, die Daten von unload.php abruft
+async function fetchUVData(route) {
+    console.log("Starte Anfrage an unload.php");
+
+    try {
+        const response = await fetch(`etl/unload.php?route=${route}`); // Route als Parameter angeben
+        if (!response.ok) {
+            throw new Error('Fehler beim Abrufen der UV-Daten');
+        }
+
+        const data = await response.json(); // Erwartet eine JSON-Antwort
+        console.log("Daten erfolgreich abgerufen:", data); // Ausgabe in der Konsole zur Überprüfung
+
+        // Hier kannst du die Daten im Frontend verarbeiten
+        processUVData(data);
+
+    } catch (error) {
+        console.error('Fehler:', error);
+    }
+}
+
+// Funktion zum Verarbeiten der abgerufenen Daten
+function processUVData(data) {
+    console.log("Verarbeite UV-Daten");
+
+    // Überprüfen, ob genug Daten vorhanden sind
+    if (data.length < 2) {
+        console.error("Nicht genügend UV-Daten vorhanden");
+        window.uvIndex = 0; // Setzen Sie einen Standardwert, wenn die Daten fehlen
+        return;
+    }
+
+    // Annahme: Die UV-Daten enthalten Objekte mit den Feldern latitude, longitude, now_uvi
+    const uvValues = data.map(item => item.now_uvi); // Alle UV-Indizes
+    const uvSum = uvValues.reduce((acc, uv) => acc + uv, 0); // Summe der UV-Indizes
+    window.uvIndex = uvSum / uvValues.length; // Durchschnitt des UV-Index
+    console.log(`Durchschnittlicher UV-Index: ${window.uvIndex}`);
+}
+
+// Funktion zur Berechnung des Sonnenschutzfaktors (SPF) unter Berücksichtigung der neuen Formel
+function calculateSPF(travelTime, protectionTime, uvIndex) {
+    if (travelTime <= 0) {
+        console.error("Fahrtdauer muss größer als null sein.");
+        return 0; // Verhindern von Division durch null
+    }
+
+    // Berechnung des SPF basierend auf der neuen Formel
+    let spf = (protectionTime / travelTime) * uvIndex;
+
+    return Math.round(spf); // Gibt den SPF-Wert zurück, gerundet auf die nächste ganze Zahl
+}
+
+// Event Listener für den Button
+document.getElementById("calculateButton").addEventListener("click", async function () {
+    const skinType = parseInt(document.getElementById("skinType").value);
+    const route = document.getElementById("route").value;
+
+    console.log(`Berechnung gestartet: Hauttyp ${skinType}, Route ${route}`);
+
+    await fetchUVData(route); // Zuerst UV-Daten abrufen
+
+    // Berechnung der Distanz basierend auf der Route
+    const distance = getDistance(route);
+    const travelTime = distance / 15; // 15 km/h als Flussgeschwindigkeit
+    const protectionTime = getProtectionTime(skinType);
+
+    console.log(`Distanz: ${distance} km, Fahrtdauer: ${travelTime} Stunden, Eigenschutzzeit: ${protectionTime} Minuten`);
+
+    // Berechnung des SPF unter Berücksichtigung des UV-Index
+    const sunscreenFactor = calculateSPF(travelTime, protectionTime, window.uvIndex);
+    
+    // Ausgabe der Ergebnisse (nur Sonnenschutzfaktor als SPF)
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = `
+        <p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor}</p>
+        <p>Durchschnittlicher UV-Index: ${window.uvIndex}</p>
+    `;
+});
+
+// Funktion zur Bestimmung der Strecke basierend auf der Route
+function getDistance(route) {
+    const distances = {
+        "thun-bern": 30,      // Thun - Bern (30 km)
+        "thun-uttigen": 15,   // Thun - Uttigen (15 km)
+        "uttigen-bern": 10,   // Uttigen - Bern (10 km)
+        "bern-wohlen": 50     // Bern - Wohlen (50 km)
+    };
+    return distances[route] || 0; // Standardwert 0 für unbekannte Routen
+}
+
+// Funktion zur Bestimmung der Eigenschutzzeit basierend auf Hauttyp
+function getProtectionTime(skinType) {
+    switch (skinType) {
+        case 1: return 10; // Hauttyp 1: 10 Minuten
+        case 2: return 20; // Hauttyp 2: 20 Minuten
+        case 3: return 30; // Hauttyp 3: 30 Minuten
+        case 4: return 50; // Hauttyp 4: 50 Minuten
+        case 5: return 60; // Hauttyp 5: 60 Minuten
+        case 6: return 60; // Hauttyp 6: 60 Minuten
+        default: return 30; // Standardwert für unbekannte Hauttypen
+    }
+}
+
+
+<!-- html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do not get sunbern</title>
+</head>
+
+</body>
+    <h1>Sonnenschutzfaktor Berechnen</h1>
+
+    <label for="skinType">Hauttyp wählen:</label>
+    <select id="skinType">
+        <option value="1">Hauttyp 1 (Eigenschutzzeit: 10 min)</option>
+        <option value="2">Hauttyp 2 (Eigenschutzzeit: 20 min)</option>
+        <option value="3">Hauttyp 3 (Eigenschutzzeit: 30 min)</option>
+        <option value="4">Hauttyp 4 (Eigenschutzzeit: 50 min)</option>
+        <option value="5">Hauttyp 5 (Eigenschutzzeit: 60 min)</option>
+        <option value="6">Hauttyp 6 (Eigenschutzzeit: 60 min)</option>
+    </select>
+
+    <label for="route">Route wählen:</label>
+    <select id="route">
+        <option value="thun-bern">Thun - Bern (30 km)</option>
+        <option value="uttigen-bern">Uttigen - Bern (10 km)</option>
+        <option value="thun-uttigen">Thun - Uttigen (15 km)</option>
+        <option value="bern-wohlen">Bern - Wohlen (50 km)</option>
+    </select>
+
+    <button id="calculateButton">Berechnen</button>
+
+    <div id="result"></div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html> -->
+
+unload (bereis wieder eingefügt)
+
+<?php
+// Include the database configuration
+require 'config.php';
+//header json
+header('Content-Type: application/json');
+
+try {
+    // Create a new PDO instance
+    $pdo = new PDO($dsn, $username, $password, $options);
+
+    // Prepare the SQL statement
+    $stmt = $pdo->prepare("SELECT latitude, longitude, `now_uvi` FROM flow_daten");
+
+    // Execute the statement
+    $stmt->execute();
+
+    // Fetch all the results
+    $data = $stmt->fetchAll();
+
+    // Set the content type to JSON
+    header('Content-Type: application/json');
+
+    // Output the data as JSON
+    echo json_encode($data);
+
+} catch (PDOException $e) {
+    // Handle the error
+    http_response_code(500);
+    echo json_encode(['error' => $e->getMessage()]);
+}
+?>
+
+
+js 14.10 10:00
+
+console.log('Hello, world');
+
+// Funktion, die Daten von unload.php abruft
+async function fetchUVData(start, end) {
+    console.log(`Starte Anfrage an unload.php für ${start} und ${end}`);
+
+    try {
+        const response = await fetch(`https://im3.luciaschnyder.ch/etl/unload.php`); // Hier deine URL für die UV-Daten
+        if (!response.ok) {
+            throw new Error('Fehler beim Abrufen der UV-Daten');
+        }
+
+        const data = await response.json(); // Erwartet eine JSON-Antwort
+        console.log("Daten erfolgreich abgerufen:", data); // Ausgabe in der Konsole zur Überprüfung
+
+        // Filter UV-Daten nach Start- und Endpunkt
+        const startData = data.find(item => item.location === start);
+        const endData = data.find(item => item.location === end);
+
+        if (!startData || !endData) {
+            throw new Error('Keine UV-Daten für die gewählten Orte gefunden');
+        }
+
+        // Durchschnitt des UV-Indexes berechnen
+        const uvIndex = (parseFloat(startData.now_uvi) + parseFloat(endData.now_uvi)) / 2;
+        console.log(`Durchschnittlicher UV-Index: ${uvIndex}`);
+        return uvIndex;
+
+    } catch (error) {
+        console.error('Fehler:', error);
+        return 0; // Falls ein Fehler auftritt, setze UV-Index auf 0
+    }
+}
+
+// Funktion zur Berechnung des Sonnenschutzfaktors (SPF)
+function calculateSPF(distance, skinType, uvIndex) {
+    const riverSpeed = 15; // Geschwindigkeit des Flusses in km/h
+    const protectionTime = getProtectionTime(skinType); // Eigenschutzzeit in Minuten
+    const travelTime = distance / riverSpeed; // Fahrtdauer in Stunden
+
+    // Berechnung des Sonnenschutzfaktors
+    const spf = (travelTime / (protectionTime / 60)) * uvIndex; // Formel für SPF
+    console.log(`Berechneter Sonnenschutzfaktor (SPF): ${spf}`);
+    return spf;
+}
+
+// Event Listener für den Button
+document.getElementById("calculateButton").addEventListener("click", async function () {
+    const skinType = parseInt(document.getElementById("skinType").value);
+    const route = document.getElementById("route").value;
+
+    console.log(`Berechnung gestartet: Hauttyp ${skinType}, Route ${route}`);
+
+    // Berechnung der Distanz und UV-Daten basierend auf der Route
+    let start, end, distance;
+    switch (route) {
+        case 'thun-bern':
+            start = 'thun';
+            end = 'bern';
+            distance = 30;
+            break;
+        case 'uttigen-bern':
+            start = 'uttigen';
+            end = 'bern';
+            distance = 10;
+            break;
+        case 'bern-wohlen':
+            start = 'bern';
+            end = 'wohlen';
+            distance = 20;
+            break;
+    }
+
+    // Hole den UV-Index (Durchschnitt zwischen Start und Endpunkt)
+    const uvIndex = await fetchUVData(start, end);
+
+    // Berechnung des Sonnenschutzfaktors
+    const sunscreenFactor = calculateSPF(distance, skinType, uvIndex);
+    
+    // Ausgabe der Ergebnisse (Sonnenschutzfaktor)
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = `<p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor.toFixed(2)}</p>`;
+
+    // Zeige den aktuellen UV-Index an
+    const uvIndexDisplay = document.getElementById("uvIndexDisplay");
+    uvIndexDisplay.innerHTML = `<p>Aktueller UV-Index: ${uvIndex.toFixed(2)}</p>`;
+});
+
+// Funktion zur Bestimmung der Eigenschutzzeit basierend auf Hauttyp
+function getProtectionTime(skinType) {
+    switch (skinType) {
+        case 1: return 10; // Hauttyp 1: 10 Minuten
+        case 2: return 20; // Hauttyp 2: 20 Minuten
+        case 3: return 30; // Hauttyp 3: 30 Minuten
+        case 4: return 50; // Hauttyp 4: 50 Minuten
+        case 5: return 60; // Hauttyp 5: 60 Minuten
+        case 6: return 60; // Hauttyp 6: 60 Minuten
+        default: return 30; // Standardwert für unbekannte Hauttypen
+    }
+}
+
+js 14.10 14:35
+
+console.log('Hello, world');
+
+// Funktion, die Daten von unload.php abruft
+async function fetchUVData() {
+    console.log("Starte Anfrage an unload.php");
+
+    try {
+        const response = await fetch(`etl/unload.php`); // Hole die Daten ohne Route
+        if (!response.ok) {
+            throw new Error('Fehler beim Abrufen der UV-Daten');
+        }
+
+        const data = await response.json(); // Erwartet eine JSON-Antwort
+        console.log("Daten erfolgreich abgerufen:", data); // Ausgabe in der Konsole zur Überprüfung
+
+        // Hier kannst du die Daten im Frontend verarbeiten
+        processUVData(data);
+
+    } catch (error) {
+        console.error('Fehler:', error);
+    }
+}
+
+// Funktion zum Verarbeiten der abgerufenen UV-Daten
+function processUVData(data) {
+    console.log("Verarbeite UV-Daten");
+
+    // Überprüfen, ob genug Daten vorhanden sind
+    if (data.length < 1) { // Überprüfen auf mindestens 1 Datensatz
+        console.error("Nicht genügend UV-Daten vorhanden");
+        window.uvIndex = 0; // Setzen Sie einen Standardwert, wenn die Daten fehlen
+        displayUVIndex(window.uvIndex);
+        return;
+    }
+
+    // Annahme: Die UV-Daten enthalten Objekte mit dem Feld `now_uvi`
+    const uvValues = data.map(item => parseFloat(item.now_uvi)); // Alle UV-Indizes als Zahlen
+    console.log("UV-Indizes:", uvValues);
+    const uvSum = uvValues.reduce((acc, uv) => acc + uv, 0); // Summe der UV-Indizes
+    window.uvIndex = (uvSum / uvValues.length).toFixed(2); // Durchschnitt des UV-Index auf 2 Dezimalstellen
+    console.log(`Aktueller UV-Index: ${window.uvIndex}`);
+
+    // Zeige den aktuellen UV-Index an
+   displayUVIndex(window.uvIndex);
+}
+
+// Funktion zur Anzeige des UV-Index im HTML
+ function displayUVIndex(uvIndex) {
+ const uvIndexDisplay = document.getElementById("uvIndexDisplay");
+ uvIndexDisplay.innerHTML = `<p>Aktueller UV-Index: ${uvIndex}</p>`;
+}
+
+// Funktion zur Berechnung des Sonnenschutzfaktors (SPF)
+function calculateSPF(distance, skinType) {
+    const riverSpeed = 15; // Geschwindigkeit des Flusses in km/h
+    const protectionTime = getProtectionTime(skinType); // Eigenschutzzeit in Minuten
+    const travelTime = distance / riverSpeed; // Fahrtdauer in Stunden
+
+    // Berechnung des Sonnenschutzfaktors
+    const spf = (travelTime / (protectionTime / 60)) * window.uvIndex; // Formel für SPF
+    console.log(`Empfohlener Sonnenschutzfaktor (SPF): ${spf}`);
+    return spf;
+}
+
+// Event Listener für den Button
+document.getElementById("calculateButton").addEventListener("click", async function () {
+    const skinType = parseInt(document.getElementById("skinType").value);
+    const route = document.getElementById("route").value; // Route ist hier noch da, falls du sie brauchst
+
+    console.log(`Berechnung gestartet: Hauttyp ${skinType}, Route ${route}`);
+
+    // Berechnung der Distanz basierend auf der Route
+    const distance = getDistance(route);
+    await fetchUVData(); // Jetzt ohne Route
+
+    const resultDiv = document.getElementById("result");
+
+    // Berechnung des Sonnenschutzfaktors
+    const sunscreenFactor = calculateSPF(distance, skinType);
+
+
+ // Ausgabe der Ergebnisse (Sonnenschutzfaktor)
+ let protectionMessage = "";
+
+ // Bedingungen für den Schutztext basierend auf SPF
+ if (sunscreenFactor < 20) {
+     protectionMessage = "Kein Schutz erforderlich.";
+ } else if (sunscreenFactor < 30) {
+     protectionMessage = "Du musst dich mit 20 SPF eincremen.";
+ } else if (sunscreenFactor < 60) {
+     protectionMessage = "Du musst dich mit 30 SPF eincremen.";
+ } else {
+     protectionMessage = "Du musst dich mit 50 SPF eincremen.";
+ }
+
+ // Ausgabe des empfohlenen Sonnenschutzfaktors und der Schutznachricht
+ resultDiv.innerHTML = `<p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor.toFixed(2)}</p>`;
+ resultDiv.innerHTML += `<p>${protectionMessage}</p>`;
+});
+  
+
+// Funktion zur Bestimmung der Strecke basierend auf der Route
+function getDistance(route) {
+    const distances = {
+        "thun-bern": 30,      // Thun - Bern (30 km)
+        "uttigen-bern": 10,   // Uttigen - Bern (10 km)
+        "bern-wohlen": 20     // Bern - Wohlen (20 km)
+    };
+    return distances[route] || 0; // Standardwert 0 für unbekannte Routen
+}
+
+// Funktion zur Bestimmung der Eigenschutzzeit basierend auf Hauttyp
+function getProtectionTime(skinType) {
+    switch (skinType) {
+        case 1: return 10; // Hauttyp 1: 10 Minuten
+        case 2: return 20; // Hauttyp 2: 20 Minuten
+        case 3: return 30; // Hauttyp 3: 30 Minuten
+        case 4: return 50; // Hauttyp 4: 50 Minuten
+        case 5: return 60; // Hauttyp 5: 60 Minuten
+        case 6: return 60; // Hauttyp 6: 60 Minuten
+        default: return 30; // Standardwert für unbekannte Hauttypen
+    }
+}
+
+unload.php 14.10 15:00
+
+<?php
+// Include the database configuration
+require 'config.php';
+//header json
+header('Content-Type: application/json');
+
+try {
+    // Create a new PDO instance
+    $pdo = new PDO($dsn, $username, $password, $options);
+
+    // Prepare the SQL statement
+    $stmt = $pdo->prepare("SELECT latitude, longitude, now_uvi, erstellt_am FROM flow_daten");
+
+    // Execute the statement
+    $stmt->execute();
+
+    // Fetch all the results
+    $data = $stmt->fetchAll();
+
+    // Output the data as JSON
+    echo json_encode($data);
+
+} catch (PDOException $e) {
+    // Handle the error
+    http_response_code(500);
+    echo json_encode(['error' => $e->getMessage()]);
+}
+?>
+
+
+html stand 14.10 um 16:48 uhr 
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do not get sunbern</title>
+</head>
+<body>
+    <h1>Sonnenschutzfaktor berechnen</h1>
+
+    <!-- Auswahl des Hauttyps -->
+    <label for="skinType">Hauttyp wählen:</label>
+    <select id="skinType">
+        <option value="1">Hauttyp 1 (Eigenschutzzeit: 10 min)</option>
+        <option value="2">Hauttyp 2 (Eigenschutzzeit: 20 min)</option>
+        <option value="3">Hauttyp 3 (Eigenschutzzeit: 30 min)</option>
+        <option value="4">Hauttyp 4 (Eigenschutzzeit: 50 min)</option>
+        <option value="5">Hauttyp 5 (Eigenschutzzeit: 60 min)</option>
+        <option value="6">Hauttyp 6 (Eigenschutzzeit: 60 min)</option>
+    </select>
+
+    <!-- Auswahl der Route -->
+    <label for="route">Route wählen:</label>
+    <select id="route">
+        <option value="thun-bern">Thun - Bern (30 km)</option>
+        <option value="uttigen-bern">Uttigen - Bern (10 km)</option>
+        <option value="bern-wohlen">Bern - Wohlen (20 km)</option>
+    </select>
+
+    <!-- Button zur Berechnung -->
+    <button id="calculateButton">Berechnen</button>
+
+    <!-- Ergebnisbereich für den SPF -->
+    <div id="result"></div>
+
+    <!-- Bereich zur Anzeige des aktuellen UV-Index -->
+    <div id="uvIndexDisplay"></div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

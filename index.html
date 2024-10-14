@@ -4,11 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Do not get sunbern</title>
+    <link rel="stylesheet" href="sunbern.css">
 </head>
 <body>
-    <h1>Sonnenschutzfaktor berechnen</h1>
+    <header>
+        <div id="home">
+            <a href="index.html"><img src="grafiken/Logo Sunberned [Wiederhergestellt].png" alt="Home" width="80" height="75"></a>
+        </div>
+    </header>
 
-    <!-- Auswahl des Hauttyps -->
+    <main>
+        <section id="bigtext">
+            <div>
+                <h1>Click auf die Sonnencreme</h1>
+                <h2>Erfahre, wie du dich beim aareböötle eincremen musst</h2>
+            </div>
+        </section>
+
+        <!-- Container für die Wellenbilder -->
+        <section id="bilder">
+            <img src="grafiken/welle1 (0-00-00-00).png">
+            <img src="grafiken/welle2 (0-00-00-00).png">
+            <img src="grafiken/welle3 (0-00-00-00).png">
+            <img src="grafiken/welle4 (0-00-00-00).png">
+        </section>
+    </main>
+
+    <p>Sonnenschutzfaktor berechnen</p>
     <label for="skinType">Hauttyp wählen:</label>
     <select id="skinType">
         <option value="1">Hauttyp 1 (Eigenschutzzeit: 10 min)</option>
@@ -19,7 +41,6 @@
         <option value="6">Hauttyp 6 (Eigenschutzzeit: 60 min)</option>
     </select>
 
-    <!-- Auswahl der Route -->
     <label for="route">Route wählen:</label>
     <select id="route">
         <option value="thun-bern">Thun - Bern (30 km)</option>
@@ -27,13 +48,8 @@
         <option value="bern-wohlen">Bern - Wohlen (20 km)</option>
     </select>
 
-    <!-- Button zur Berechnung -->
     <button id="calculateButton">Berechnen</button>
-
-    <!-- Ergebnisbereich für den SPF -->
     <div id="result"></div>
-
-    <!-- Bereich zur Anzeige des aktuellen UV-Index -->
     <div id="uvIndexDisplay"></div>
 
     <script src="js/script.js"></script>
