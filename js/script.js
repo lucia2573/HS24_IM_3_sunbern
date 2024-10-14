@@ -58,6 +58,9 @@ function calculateSPF(distance, skinType) {
     // Berechnung des Sonnenschutzfaktors
     const spf = (travelTime / (protectionTime / 60)) * window.uvIndex; // Formel für SPF
     console.log(`Berechneter Sonnenschutzfaktor (SPF): ${spf}`);
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = `
+        <p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor.toFixed(2)}</p>`;
 
     // Zuweisung des SPF basierend auf dem UV-Index und Hauttyp
     if (skinType === 1) { // Hauttyp 1
@@ -92,10 +95,10 @@ document.getElementById("calculateButton").addEventListener("click", async funct
     const sunscreenFactor = calculateSPF(distance, skinType);
     
     // Ausgabe der Ergebnisse (Sonnenschutzfaktor)
-    const resultDiv = document.getElementById("result");
-    resultDiv.innerHTML = `
-        <p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor.toFixed(2)}</p>
-    `;
+   // const resultDiv = document.getElementById("result");
+   // resultDiv.innerHTML = `
+   //     <p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor.toFixed(2)}</p>
+   // `;
 });
 
 // Funktion zur Bestimmung der Strecke basierend auf der Route
