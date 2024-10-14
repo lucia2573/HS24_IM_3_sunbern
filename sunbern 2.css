@@ -1,16 +1,14 @@
+/* Global Styles */
 body {
-    background-color: #F8EDC7;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
-    padding: 0;
     margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #F8EDC7;
 }
 
 /* Container für die übereinanderliegenden Wellenbilder */
 #bilder {
-    position: fixed; /* Festes Positionieren, damit es über anderen Elementen liegt */
+    position: relative; /* Damit die Wellen relativ zum Dokument gestapelt werden */
     top: 0; /* Beginnt direkt am oberen Rand */
     left: 0;
     width: 100%;
@@ -30,33 +28,28 @@ body {
 /* Erste Welle */
 #bilder img:nth-child(1) {
     top: 0px; /* Oberste Welle */
-    z-index: 1;
+    z-index: 2;
 }
 
 /* Zweite Welle */
 #bilder img:nth-child(2) {
     top: 2px; /* Leicht nach unten versetzt */
-    z-index: 2;
+    z-index: 3;
 }
 
 /* Dritte Welle */
 #bilder img:nth-child(3) {
     top: 10px; /* Weiter nach unten versetzt */
-    z-index: 3;
+    z-index: 4;
 }
 
 /* Vierte Welle */
 #bilder img:nth-child(4) {
     top: 15px; /* Noch weiter nach unten versetzt */
-    z-index: 4; /* Unterste Welle */
+    z-index: 5; /* Oberste Welle */
 }
 
-#textbox {
-    position: relative; /* Stelle sicher, dass der Textcontainer relativ positioniert ist */
-    z-index: 10; /* Setze den z-index höher als den des Bildcontainers */
-    padding: 20px; /* Innenabstand für den Textcontainer */
-    margin: 50px; /* Außenabstand für den Textcontainer */
-}
+/* Gradient unter der vierten Welle */
 
 /* Restlicher Inhalt mit höherem z-index */
 #content,
