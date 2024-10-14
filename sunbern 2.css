@@ -51,6 +51,13 @@ body {
     z-index: 4; /* Unterste Welle */
 }
 
+#textbox {
+    position: relative; /* Stelle sicher, dass der Textcontainer relativ positioniert ist */
+    z-index: 10; /* Setze den z-index höher als den des Bildcontainers */
+    padding: 20px; /* Innenabstand für den Textcontainer */
+    margin: 50px; /* Außenabstand für den Textcontainer */
+}
+
 /* Restlicher Inhalt mit höherem z-index */
 #content,
 #calculateButton,
