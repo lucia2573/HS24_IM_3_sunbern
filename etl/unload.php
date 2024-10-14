@@ -14,14 +14,14 @@ try {
     // Setze die SQL-Abfrage basierend auf der Route
     switch ($route) {
         case 'thun-bern':
-            // Abfrage für Thun (46.6167, 7.5667) und Bern (46.9480, 7.4474)
+            // Abfrage für Thun (46.8167, 7.5667) und Bern (46.9480, 7.4474)
             $stmt = $pdo->prepare("
-                SELECT latitude, longitude, now_uvi, erstellt_am 
-                FROM flow_daten 
-                WHERE (latitude = 46.6167 AND longitude = 7.5667) -- Thun
-                OR (latitude = 46.9480 AND longitude = 7.4474) -- Bern
-                ORDER BY erstellt_am DESC LIMIT 2
-            ");
+            SELECT latitude, longitude, now_uvi, erstellt_am 
+            FROM flow_daten 
+            WHERE (latitude = 46.8167 AND longitude = 7.5667) -- Thun
+            OR (latitude = 46.9480 AND longitude = 7.4474) -- Bern
+            ORDER BY erstellt_am DESC LIMIT 2
+        ");
             break;
 
         case 'uttigen-bern':
