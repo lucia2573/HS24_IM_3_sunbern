@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Do not get sunbern</title>
 </head>
+<body>
+    <h1>Sonnenschutzfaktor berechnen</h1>
 
-</body>
-    <h1>Sonnenschutzfaktor Berechnen</h1>
-
+    <!-- Auswahl des Hauttyps -->
     <label for="skinType">Hauttyp wählen:</label>
     <select id="skinType">
         <option value="1">Hauttyp 1 (Eigenschutzzeit: 10 min)</option>
@@ -19,20 +19,23 @@
         <option value="6">Hauttyp 6 (Eigenschutzzeit: 60 min)</option>
     </select>
 
+    <!-- Auswahl der Route -->
     <label for="route">Route wählen:</label>
     <select id="route">
         <option value="thun-bern">Thun - Bern (30 km)</option>
         <option value="uttigen-bern">Uttigen - Bern (10 km)</option>
-        <option value="thun-uttigen">Thun - Uttigen (15 km)</option>
-        <option value="bern-wohlen">Bern - Wohlen (50 km)</option>
+        <option value="bern-wohlen">Bern - Wohlen (20 km)</option>
     </select>
 
+    <!-- Button zur Berechnung -->
     <button id="calculateButton">Berechnen</button>
 
+    <!-- Ergebnisbereich für den SPF -->
     <div id="result"></div>
+
+    <!-- Bereich zur Anzeige des aktuellen UV-Index -->
+    <div id="uvIndexDisplay"></div>
 
     <script src="js/script.js"></script>
 </body>
-
 </html>
-

@@ -1,11 +1,11 @@
 console.log('Hello, world');
 
 // Funktion, die Daten von unload.php abruft
-async function fetchUVData(route) {
+async function fetchUVData() {
     console.log("Starte Anfrage an unload.php");
 
     try {
-        const response = await fetch(`etl/unload.php?route=${route}`); // Route als Parameter angeben
+        const response = await fetch(`etl/unload.php`); // Hole die Daten ohne Route
         if (!response.ok) {
             throw new Error('Fehler beim Abrufen der UV-Daten');
         }
@@ -21,61 +21,80 @@ async function fetchUVData(route) {
     }
 }
 
-// Funktion zum Verarbeiten der abgerufenen Daten
+// Funktion zum Verarbeiten der abgerufenen UV-Daten
 function processUVData(data) {
     console.log("Verarbeite UV-Daten");
 
     // Überprüfen, ob genug Daten vorhanden sind
-    if (data.length < 2) {
+    if (data.length < 1) { // Überprüfen auf mindestens 1 Datensatz
         console.error("Nicht genügend UV-Daten vorhanden");
         window.uvIndex = 0; // Setzen Sie einen Standardwert, wenn die Daten fehlen
+        displayUVIndex(window.uvIndex);
         return;
     }
 
-    // Annahme: Die UV-Daten enthalten Objekte mit den Feldern latitude, longitude, now_uvi
-    const uvValues = data.map(item => item.now_uvi); // Alle UV-Indizes
+    // Annahme: Die UV-Daten enthalten Objekte mit dem Feld `now_uvi`
+    const uvValues = data.map(item => parseFloat(item.now_uvi)); // Alle UV-Indizes als Zahlen
     const uvSum = uvValues.reduce((acc, uv) => acc + uv, 0); // Summe der UV-Indizes
-    window.uvIndex = uvSum / uvValues.length; // Durchschnitt des UV-Index
+    window.uvIndex = (uvSum / uvValues.length).toFixed(2); // Durchschnitt des UV-Index auf 2 Dezimalstellen
     console.log(`Durchschnittlicher UV-Index: ${window.uvIndex}`);
+
+    // Zeige den aktuellen UV-Index an
+    displayUVIndex(window.uvIndex);
 }
 
-// Funktion zur Berechnung des Sonnenschutzfaktors (SPF) unter Berücksichtigung der neuen Formel
-function calculateSPF(travelTime, protectionTime, uvIndex) {
-    if (travelTime <= 0) {
-        console.error("Fahrtdauer muss größer als null sein.");
-        return 0; // Verhindern von Division durch null
+// Funktion zur Anzeige des UV-Index im HTML
+function displayUVIndex(uvIndex) {
+    const uvIndexDisplay = document.getElementById("uvIndexDisplay");
+    uvIndexDisplay.innerHTML = `<p>Aktueller UV-Index: ${uvIndex}</p>`;
+}
+
+// Funktion zur Berechnung des Sonnenschutzfaktors (SPF)
+function calculateSPF(distance, skinType) {
+    const riverSpeed = 15; // Geschwindigkeit des Flusses in km/h
+    const protectionTime = getProtectionTime(skinType); // Eigenschutzzeit in Minuten
+    const travelTime = distance / riverSpeed; // Fahrtdauer in Stunden
+
+    // Berechnung des Sonnenschutzfaktors
+    const spf = (travelTime / (protectionTime / 60)) * window.uvIndex; // Formel für SPF
+    console.log(`Berechneter Sonnenschutzfaktor (SPF): ${spf}`);
+
+    // Zuweisung des SPF basierend auf dem UV-Index und Hauttyp
+    if (skinType === 1) { // Hauttyp 1
+        return (window.uvIndex >= 3) ? 30 : 0; // Niedriger UV-Index = kein Schutz erforderlich
+    } else if (skinType === 2) { // Hauttyp 2
+        return (window.uvIndex >= 3) ? 15 : 0;
+    } else if (skinType === 3) { // Hauttyp 3
+        return (window.uvIndex >= 6) ? 15 : 0;
+    } else if (skinType === 4) { // Hauttyp 4
+        return (window.uvIndex >= 8) ? 15 : 0;
+    } else if (skinType === 5) { // Hauttyp 5
+        return (window.uvIndex >= 11) ? 15 : 0;
+    } else if (skinType === 6) { // Hauttyp 6
+        return (window.uvIndex >= 11) ? 15 : 0;
     }
 
-    // Berechnung des SPF basierend auf der neuen Formel
-    let spf = (protectionTime / travelTime) * uvIndex;
-
-    return Math.round(spf); // Gibt den SPF-Wert zurück, gerundet auf die nächste ganze Zahl
+    return 0; // Standardwert
 }
 
 // Event Listener für den Button
 document.getElementById("calculateButton").addEventListener("click", async function () {
     const skinType = parseInt(document.getElementById("skinType").value);
-    const route = document.getElementById("route").value;
+    const route = document.getElementById("route").value; // Route ist hier noch da, falls du sie brauchst
 
     console.log(`Berechnung gestartet: Hauttyp ${skinType}, Route ${route}`);
 
-    await fetchUVData(route); // Zuerst UV-Daten abrufen
-
     // Berechnung der Distanz basierend auf der Route
     const distance = getDistance(route);
-    const travelTime = distance / 15; // 15 km/h als Flussgeschwindigkeit
-    const protectionTime = getProtectionTime(skinType);
+    await fetchUVData(); // Jetzt ohne Route
 
-    console.log(`Distanz: ${distance} km, Fahrtdauer: ${travelTime} Stunden, Eigenschutzzeit: ${protectionTime} Minuten`);
-
-    // Berechnung des SPF unter Berücksichtigung des UV-Index
-    const sunscreenFactor = calculateSPF(travelTime, protectionTime, window.uvIndex);
+    // Berechnung des Sonnenschutzfaktors
+    const sunscreenFactor = calculateSPF(distance, skinType);
     
-    // Ausgabe der Ergebnisse (nur Sonnenschutzfaktor als SPF)
+    // Ausgabe der Ergebnisse (Sonnenschutzfaktor)
     const resultDiv = document.getElementById("result");
     resultDiv.innerHTML = `
-        <p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor}</p>
-        <p>Durchschnittlicher UV-Index: ${window.uvIndex}</p>
+        <p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor.toFixed(2)}</p>
     `;
 });
 
@@ -83,9 +102,8 @@ document.getElementById("calculateButton").addEventListener("click", async funct
 function getDistance(route) {
     const distances = {
         "thun-bern": 30,      // Thun - Bern (30 km)
-        "thun-uttigen": 15,   // Thun - Uttigen (15 km)
         "uttigen-bern": 10,   // Uttigen - Bern (10 km)
-        "bern-wohlen": 50     // Bern - Wohlen (50 km)
+        "bern-wohlen": 20     // Bern - Wohlen (20 km)
     };
     return distances[route] || 0; // Standardwert 0 für unbekannte Routen
 }
