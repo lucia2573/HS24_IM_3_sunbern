@@ -16,50 +16,176 @@ body {
 
 /* Übereinander liegende und leicht versetzte Wellenbilder */
 #bilder img {
-    position: absolute; /* Bilder übereinander stapeln */
-    width: 100%; /* Zieht das Bild über die volle Breite */
-    height: auto; /* Beibehaltung des Seitenverhältnisses */
-    left: 50%; /* Horizontal zentrieren */
-    transform: translateX(-50%); /* Korrektur der Zentrierung */
+    position: absolute;
+    width: 100%;
+    height: auto;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* Erste Welle */
 #bilder img:nth-child(1) {
-    top: -100px; /* Oberste Welle */
+    top: -100px;
     z-index: 1;
 }
 
 /* Zweite Welle */
 #bilder img:nth-child(2) {
-    top: -98px; /* Leicht nach unten versetzt */
+    top: -98px;
     z-index: 2;
 }
 
 /* Dritte Welle */
 #bilder img:nth-child(3) {
-    top: -96px; /* Weiter nach unten versetzt */
+    top: -96px;
     z-index: 3;
 }
 
 /* Vierte Welle */
 #bilder img:nth-child(4) {
-    top: -94px; /* Noch weiter nach unten versetzt */
-    z-index: 4; /* Unterste Welle */
+    top: -94px;
+    z-index: 4;
+}
+
+#bigtext {
+    position: relative;
+    font-size: 4vh;
+    text-align: center;
+    z-index: 10;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 10rem;
+    margin: 50px;
 }
 
 #textbox {
-    position: relative; /* Stelle sicher, dass der Textcontainer relativ positioniert ist */
-    z-index: 10; /* Setze den z-index höher als den des Bildcontainers */
-    padding: 20px; /* Innenabstand für den Textcontainer */
-    margin: 50px; /* Außenabstand für den Textcontainer */
+    position: relative;
+    text-align: center;
+    z-index: 10;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 20rem;
+    margin: 50px;
 }
 
-/* Restlicher Inhalt mit höherem z-index */
+#gradient1 {
+    background-image: url(grafiken/gradient1.png);
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    margin-top: -29vh;
+    z-index: 5;
+}
+
+#sunbernverhindern {
+    z-index: 10;
+    font-size: 4vh;
+    text-align: center;
+    padding: 2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: -40rem;
+}
+
+/* Container für die Karte mit dem Pfad */
+#map-container {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    z-index: 12;
+}
+
+#map {
+    width: 60%;
+    height: auto;
+    z-index: 12;
+}
+#wegetext {
+    position: relative;
+    font-size: 8vh;
+    text-align: center;
+    z-index: 10;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 10rem;
+    margin: 50px;
+}
+
+#map-container {
+    position: relative;
+    width: 60%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.map-point_point-1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -148vh;
+    margin-left: 0.2vh;
+    cursor: pointer; /* Makes the SVG behave like a button */
+}
+
+.map-point_point-2{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 6vh; /* Adjust spacing between points */
+    margin-left: -3vh;
+    cursor: pointer; /* Makes the SVG behave like a button */
+}
+
+.map-point_point-3{
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 29vh;
+    margin-left: -7vh;
+    cursor: pointer; /* Makes the SVG behave like a button */
+}
+.map-point_point-4{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15vh;
+    margin-left: -10vh;
+    margin-bottom: 5vh; /* Adjust spacing between points */
+    cursor: pointer; /* Makes the SVG behave like a button */
+}
+
+
+.map-point img {
+    position: absolute;
+    width: 42px;
+    height: 41px;
+}
+
+
+
+
+
+/* Add hover effects if needed */
+.map-point:hover svg {
+    transform: scale(1.1);
+}
+
+
+
+
+/* Restlicher Inhalt */
 #content,
 #calculateButton,
 select,
 label,
 p {
-    position: relative; /* Stelle sicher, dass diese Elemente relativ positioniert sind */
-    z-index: 10; /* Setze den z-index höher als den des Bildcontainers */
+    position: relative;
+    z-index: 14;
+    align-items: center;
+    align-content: center;
 }

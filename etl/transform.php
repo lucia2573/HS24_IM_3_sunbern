@@ -3,10 +3,10 @@ include_once 'extract.php';
 
 // Definiert eine Zuordnung von Koordinaten zu Stadtnamen
 $locationsMap = [
-    ["name" => "Bern", "latitude" => 46.9480, "longitude" => 7.4474],
-    ["name" => "Thun", "latitude"  => 46.7621, "longitude" => 7.6847],
-    ["name" => "Wohlen", "latitude" => 47.3483, "longitude" => 8.2769],
-    ["name" => "Uttigen", "latitude" => 46.8167, "longitude" => 7.5667]
+    ["name" => "Bern", "latitude" => 46.94792220, "longitude" => 7.44460850],
+    ["name" => "Thun", "latitude"  => 46.74842840, "longitude" => 7.62629850],
+    ["name" => "Wohlen", "latitude" => 46.97384900, "longitude" => 7.35838360],
+    ["name" => "Uttigen", "latitude" => 46.79349477, "longitude" => 7.57790253]
 ];
 
 // Funktion zur Umwandlung der Daten

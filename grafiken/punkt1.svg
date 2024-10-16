@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="41" viewBox="0 0 42 41" fill="none">
+                    <g filter="url(#filter0_d_80_29)">
+                        <ellipse cx="15" cy="14.5" rx="15" ry="14.5" transform="matrix(-1 0 0 1 36 2)" fill="#92B2B1" shape-rendering="crispEdges"/>
+                        <path d="M21 32C12.1957 32 5 25.0921 5 16.5C5 7.9079 12.1957 1 21 1C29.8043 1 37 7.9079 37 16.5C37 25.0921 29.8043 32 21 32Z" stroke="black" stroke-opacity="0.63" stroke-width="2" shape-rendering="crispEdges"/>
+                    </g>
+                </svg>

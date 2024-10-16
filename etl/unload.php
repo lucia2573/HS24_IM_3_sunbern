@@ -14,34 +14,34 @@ try {
     // Setze die SQL-Abfrage basierend auf der Route
     switch ($route) {
         case 'thun-bern':
-            // Abfrage für Thun (46.8167, 7.5667) und Bern (46.9480, 7.4474)
+            // Abfrage für Thun (46.748428, 7.626299) und Bern (46.947922, 7.444609)
             $stmt = $pdo->prepare("
             SELECT latitude, longitude, now_uvi, erstellt_am 
             FROM flow_daten 
-            WHERE (latitude = 46.8167 AND longitude = 7.5667) -- Thun
-            OR (latitude = 46.9480 AND longitude = 7.4474) -- Bern
+            WHERE (latitude = 46.748428 AND longitude = 7.626299) -- Thun
+            OR (latitude = 46.947922 AND longitude = 7.444609) -- Bern
             ORDER BY erstellt_am DESC LIMIT 2
         ");
             break;
 
         case 'uttigen-bern':
-            // Abfrage für Uttigen (46.7621, 7.6847) und Bern (46.9480, 7.4474)
+            // Abfrage für Uttigen (46.793495, 7.577903) und Bern (46.947922, 7.444609)
             $stmt = $pdo->prepare("
                 SELECT latitude, longitude, now_uvi, erstellt_am 
                 FROM flow_daten 
-                WHERE (latitude = 46.7621 AND longitude = 7.6847) -- Uttigen
-                OR (latitude = 46.9480 AND longitude = 7.4474) -- Bern
+                WHERE (latitude = 46.793495 AND longitude = 7.577903) -- Uttigen
+                OR (latitude = 46.947922 AND longitude = 7.444609) -- Bern
                 ORDER BY erstellt_am DESC LIMIT 2
             ");
             break;
 
         case 'bern-wohlen':
-            // Abfrage für Bern (46.9480, 7.4474) und Wohlen (47.3483, 8.2769)
+            // Abfrage für Bern (46.947922, 7.444609) und Wohlen (46.973849, 7.358384)
             $stmt = $pdo->prepare("
                 SELECT latitude, longitude, now_uvi, erstellt_am 
                 FROM flow_daten 
-                WHERE (latitude = 46.9480 AND longitude = 7.4474) -- Bern
-                OR (latitude = 47.3483 AND longitude = 8.2769) -- Wohlen
+                WHERE (latitude = 46.947922 AND longitude = 7.444609) -- Bern
+                OR (latitude = 46.973849 AND longitude = 7.358384) -- Wohlen
                 ORDER BY erstellt_am DESC LIMIT 2
             ");
             break;

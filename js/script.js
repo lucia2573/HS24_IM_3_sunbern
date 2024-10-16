@@ -120,3 +120,9 @@ function getProtectionTime(skinType) {
     }
 }
 
+document.querySelectorAll('.map-point').forEach(point => {
+    point.addEventListener('click', function() {
+        alert(`You clicked on ${this.querySelector('p').textContent}`);
+        // You can replace the alert with any functionality you need
+    });
+});
