@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Do not get sunbern</title>
+    <title>Do not get sunbernt</title>
     <link rel="stylesheet" href="sunbern.css">
 </head>
 <body>
@@ -70,33 +70,32 @@
                 <p>Wohlen</p>
             </div>
         </section>
-        
 
+        <div class="slider-container">
+            <input type="range" min="0" max="60" value="0" class="slider" id="mySlider">
+            <!-- <div class="triangle"> </div> -->
+            <div class="labels">
+                <div class="label">rötliches, hellblondes Haar<br>blaue, grüne, hellgrüne Augen</div>
+                <div class="divider"></div>
+                <div class="label">blondes, hell-, dunkelbraunes Haar<br>blaue, grüne, graue Augen</div>
+                <div class="divider"></div>
+                <div class="label">dunkelblondes, hell-, dunkelbraunes Haar<br>braune, blaue, grüne, graue Augen</div>
+                <div class="divider"></div>
+                <div class="label">braunes, schwarzes Haar<br>braune Augen</div>
+                <div class="divider"></div>
+                <div class="label">schwarzes Haar<br>dunkle Augen</div>
+                <div class="divider"></div>
+                <div class="label">schwarzes Haar<br>dunkle Augen</div>
+            </div>
+            <button id="calculateBtn">SPF berechnen</button>
+        </div>
 
-
+        <div id="result"></div>
 
     </main>
 
     <p>Sonnenschutzfaktor berechnen</p>
-    <label for="skinType">Hauttyp wählen:</label>
-    <select id="skinType">
-        <option value="1">Hauttyp 1 (Eigenschutzzeit: 10 min)</option>
-        <option value="2">Hauttyp 2 (Eigenschutzzeit: 20 min)</option>
-        <option value="3">Hauttyp 3 (Eigenschutzzeit: 30 min)</option>
-        <option value="4">Hauttyp 4 (Eigenschutzzeit: 50 min)</option>
-        <option value="5">Hauttyp 5 (Eigenschutzzeit: 60 min)</option>
-        <option value="6">Hauttyp 6 (Eigenschutzzeit: 60 min)</option>
-    </select>
 
-    <label for="route">Route wählen:</label>
-    <select id="route">
-        <option value="thun-bern">Thun - Bern (30 km)</option>
-        <option value="uttigen-bern">Uttigen - Bern (10 km)</option>
-        <option value="bern-wohlen">Bern - Wohlen (20 km)</option>
-    </select>
-
-    <button id="calculateButton">Berechnen</button>
-    <div id="result"></div>
     <div id="uvIndexDisplay"></div>
 
     <script src="js/script.js"></script>
