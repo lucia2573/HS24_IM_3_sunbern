@@ -119,3 +119,4 @@ function getProtectionTime(skinType) {
         default: return 30; // Standardwert für unbekannte Hauttypen
     }
 }
+
