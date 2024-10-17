@@ -20,7 +20,27 @@ async function fetchUVData(route) {
     }
 }
 
-// Funktion zum Verarbeiten der abgerufenen UV-Daten
+// Funktion, die Daten von unloadYesterday.php abruft
+async function fetchYesterdayUVData(route) {
+    console.log("Starte Anfrage an unloadYesterday.php");
+
+    try {
+        const response = await fetch(`https://im3.luciaschnyder.ch/etl/unloadYesterday.php?route=${route}`); // Hole die Daten für gestern
+        if (!response.ok) {
+            throw new Error('Fehler beim Abrufen der UV-Daten für gestern');
+        }
+
+        const data = await response.json(); // Erwartet eine JSON-Antwort
+        console.log("Gestern Daten erfolgreich abgerufen:", data); // Ausgabe in der Konsole zur Überprüfung
+
+        processYesterdayUVData(data); // Verarbeite die Daten für gestern
+
+    } catch (error) {
+        console.error('Fehler:', error);
+    }
+}
+
+// Funktion zum Verarbeiten der abgerufenen UV-Daten für heute
 function processUVData(data) {
     console.log("Verarbeite UV-Daten");
 
@@ -37,11 +57,35 @@ function processUVData(data) {
     displayUVIndex(window.uvIndex);
 }
 
+// Funktion zum Verarbeiten der abgerufenen UV-Daten für gestern
+function processYesterdayUVData(data) {
+    console.log("Verarbeite UV-Daten für gestern");
+
+    if (data.length < 1) {
+        console.error("Nicht genügend UV-Daten für gestern vorhanden");
+        window.yesterdayUVIndex = 0;
+        displayYesterdayUVIndex(window.yesterdayUVIndex);
+        return;
+    }
+
+    const uvValues = data.map(item => parseFloat(item.now_uvi)); 
+    const uvSum = uvValues.reduce((acc, uv) => acc + uv, 0); 
+    window.yesterdayUVIndex = (uvSum / uvValues.length).toFixed(2); 
+    displayYesterdayUVIndex(window.yesterdayUVIndex);
+}
+
 // Funktion zur Anzeige des UV-Index im HTML
 function displayUVIndex(uvIndex) {
     const uvIndexDisplay = document.getElementById("uvIndexDisplay");
     uvIndexDisplay.innerHTML = `<p>Aktueller UV-Index: ${uvIndex}</p>`;
     console.log(`UV-Index: ${uvIndex}`);
+}
+
+// Funktion zur Anzeige des UV-Index für gestern im HTML
+function displayYesterdayUVIndex(yesterdayUVIndex) {
+    const yesterdayUVIndexDisplay = document.getElementById("yesterdayUVIndexDisplay");
+    yesterdayUVIndexDisplay.innerHTML = `<p>UV-Index für gestern: ${yesterdayUVIndex}</p>`;
+    console.log(`UV-Index für gestern: ${yesterdayUVIndex}`);
 }
 
 // Funktion zur Berechnung des Sonnenschutzfaktors (SPF)
@@ -76,12 +120,12 @@ document.getElementById("calculateBtn").addEventListener("click", async function
 
     const distance = getDistance(route);
     await fetchUVData(route); 
+    await fetchYesterdayUVData(route); // Fetch yesterday's data
 
     const sunscreenFactor = calculateSPF(distance, skinType);  
     console.log(`Berechneter Sonnenschutzfaktor: ${sunscreenFactor}`);
 
-
-let protectionMessage = "";
+    let protectionMessage = "";
     let spfValue = ""; // Neues Variable für den SPF Wert
 
     if (sunscreenFactor < 20) {
@@ -104,7 +148,6 @@ let protectionMessage = "";
     // SPF Wert innerhalb/über dem Bild der Sonnencreme
     document.getElementById("cremeSPF").innerHTML = `<p>${spfValue}</p>`;
 });
-
 
 // Funktion zur Bestimmung der Strecke basierend auf der Route
 function getDistance(route) {

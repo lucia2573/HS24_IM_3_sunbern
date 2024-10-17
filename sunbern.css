@@ -1,3 +1,5 @@
+
+
 body {
     background-color: #F8EDC7;
     background-repeat: no-repeat;
@@ -7,6 +9,19 @@ body {
     padding: 0;
     margin: 0;
 }
+
+h1 {
+font-family: Kranky;
+font-size: 4rem;
+}
+
+
+h2 {
+font-family: Rethink Sans;
+font-size: 2rem;
+}
+
+
 
 /* Container für die übereinanderliegenden Wellenbilder */
 #bilder {
@@ -69,11 +84,11 @@ body {
 }
 
 #gradient1 {
-    background-image: url(grafiken/gradient1.png);
+    background-image: url(grafiken/Rectangle_6.png);
     background-size: cover;
     width: 100%;
     height: 100vh;
-    margin-top: -29vh;
+    margin-top: 50vh;
     z-index: 5;
 }
 
@@ -85,7 +100,14 @@ body {
     margin-left: 2rem;
     margin-right: 2rem;
     margin-top: -40rem;
+    font-family: Rethink Sans;
 }
+
+#sunbernverhindern h3 {
+    font-family: Kranky;
+    font-size: 4rem;
+}
+
 
 /* Container für die Karte mit dem Pfad */
 #map-container {
@@ -112,6 +134,7 @@ body {
     padding-right: 2rem;
     padding-top: 10rem;
     margin: 50px;
+    font-family: Kranky;
 }
 
 #map-container {
@@ -121,6 +144,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: Rethink Sans;
 }
 
 .map-point_point-1 {
@@ -176,6 +200,10 @@ body {
     width: 70%;
     position: relative;
     text-align: center;
+    font-family: Rethink Sans;
+    align-items: center;
+    padding-bottom: 4vh;
+    padding-left: 15%;
 }
 
 .slider {
@@ -188,6 +216,7 @@ body {
     opacity: 0.9;
     border-radius: 25px;
     margin-bottom: 20px;
+    justify-content: center;
 }
 
 .slider::-webkit-slider-thumb {
@@ -272,6 +301,7 @@ body {
     padding-right: 2rem;
     padding-bottom: 93vh;
     margin: 50px;
+    font-family: Kranky;
 
 }
 
@@ -309,5 +339,93 @@ body {
     justify-content: center;
     align-items: center;
     padding-bottom: 20vh;
+    font-family: Kranky;
 }
 
+.waves {
+    position: absolute; /* Absolute Positionierung */
+    width: 100%;
+    height: 100vh; /* Full height of the viewport */
+    overflow: hidden;
+    top: 0; /* Sicherstellen, dass die Wellen oben beginnen */
+}
+
+.wave {
+    position: absolute;
+    width: 100%; /* Wellenbreite ist 100%, keine doppelte Breite */
+    height: 100%;
+    top: 0;
+    background-repeat: no-repeat; /* Keine Wiederholung der Wellen */
+    background-size: 100% auto; /* Die Welle passt sich der Breite an und behält ihr Verhältnis */
+    opacity: 0.7;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.wave1 {
+    background-image: url('grafiken/welle1.png');
+    z-index: 1;
+    opacity: 100%;
+    animation: wave-sway 3s ease-in-out infinite; /* Schnelle Bewegung */
+}
+
+.wave2 {
+    background-image: url('grafiken/welle2.png');
+    z-index: 2;
+    opacity: 100%;
+    animation: wave-sway 4s ease-in-out infinite; /* Mittelschnelle Bewegung */
+}
+
+.wave3 {
+    background-image: url('grafiken/welle3.png');
+    z-index: 3;
+    opacity: 100%;
+    animation: wave-sway 2.5s ease-in-out infinite; /* Schnellste Bewegung */
+}
+
+.wave4 {
+    background-image: url('grafiken/welle4.png');
+    z-index: 4;
+    opacity: 100%;
+    animation: wave-sway 5s ease-in-out infinite; /* Langsamste Bewegung */
+}
+
+@keyframes wave-sway {
+    0%, 100% {
+        transform: translateY(0); /* Anfang und Ende an der gleichen Position */
+    }
+    50% {
+        transform: translateY(15px); /* Leichte Aufwärtsbewegung (15px) */
+    }
+}   
+
+#yesterdayUVIndexDisplay p {
+font-family: Rethink Sans;
+font-size: 2rem;
+justify-content: center;
+text-align: center;
+}
+
+
+#spfverstehen p {
+font-family: Rethink Sans;
+font-size: 2rem;
+text-align: center;
+
+}
+
+#spfverstehen h3 {
+font-family: Kranky;
+font-size: 4rem;
+text-align: center;
+}
+
+
+#cremewellen {
+
+align-items: center;
+justify-content: center;
+height: 100vh;
+width: 100vw;
+
+}
