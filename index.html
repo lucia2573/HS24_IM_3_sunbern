@@ -7,31 +7,36 @@
     <link rel="stylesheet" href="sunbern.css">
     <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kranky&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <header>
         <div id="home">
-            <a href="index.html"><img src="grafiken/Logo Sunberned [Wiederhergestellt].png" alt="Home" width="80" height="75"></a>
+            <a href="index.html"><img src="grafiken/Logo Sunberned [Wiederhergestellt].png" alt="Home" width="120" height="115"></a>
         </div>
     </header>
 
     <main>
         <section id="bigtext">
             <div>
-                <h1>Click auf die Sonnencreme</h1>
+                <h1>Do not get sunbernt</h1>
                 <h2>Erfahre, wie du dich beim aareböötle eincremen musst</h2>
             </div>
         </section>
 
-        <!-- Container für die Wellenbilder -->
-        <!-- <section id="bilder">
-            <img src="grafiken/welle1.png">
-            <img src="grafiken/welle2.png">
-            <img src="grafiken/welle3.png">
-            <img src="grafiken/welle4.png">
-        </section> -->
+    <div class="waves">
+            <div class="wave wave1"></div>
+            <div class="wave wave2"></div>
+            <div class="wave wave3"></div>
+            <div class="wave wave4"></div>
+          </div>
+<!-- 
+        <div id="cremewellen">
+            <img src="grafiken/sonnencreme.png" width="80" height="80">
+        </div> -->
 
-        <section id="gradient1"></section>
+
+            <!-- <section id="gradient1"></section> -->
 
         <section id="sunbernverhindern">
             <h3>Wie du ein Sunbern verhindern kannst</h3>
@@ -40,40 +45,34 @@
         </section>
 
         <section id="Wege">
-            <p id="wegetext" >Deine Strecke</p>
+            <p id="wegetext">Deine Strecke</p>
             <section id="map-container">
                 <img src="grafiken/pfad.svg">
-            </section>
-        </section>
-
-        <section id="map-container">
-            <!-- SVG for Thun -->
-            <div class="map-point_point-1">
-                <img src="grafiken/punkt1.svg">
-                
-                <p>Thun</p>
-            </div>
-            
-            <!-- SVG for Uttigen -->
+                <div class="map-point_point-1">
+                    <img src="grafiken/punkt1.svg">
+                    
+                    <p>Thun</p>
+                </div>
+                 <!-- SVG for Uttigen -->
             <div class="map-point_point-2">
                 <img src="grafiken/punkt2.svg">
                 <p>Uttigen</p>
             </div>
-        
             <!-- SVG for Bern -->
             <div class="map-point_point-3">
                 <img src="grafiken/punkt3.svg">
                 <p>Bern</p>
             </div>
-        
-            <!-- SVG for Wohlen -->
-            <div class="map-point_point-4">
+             <!-- SVG for Wohlen -->
+             <div class="map-point_point-4">
                 <img src="grafiken/punkt4.svg">
                 <p>Wohlen</p>
-            </div>
-        </section>
+             </div>
+            </section>
 
-        <div class="slider-container">
+
+        <div class="slider-container">    
+        <p id="hauttyp">Dein Hauttyp</p>
             <input type="range" min="0" max="60" value="0" class="slider" id="mySlider">
             <!-- <div class="triangle"> </div> -->
             <div class="labels">
@@ -81,7 +80,7 @@
                 <div class="divider"></div>
                 <div class="label">blondes, hell-, dunkelbraunes Haar<br>blaue, grüne, graue Augen</div>
                 <div class="divider"></div>
-                <div class="label">dunkelblondes, hell-, dunkelbraunes Haar<br>braune, blaue, grüne, graue Augen</div>
+                <div class="label">dunkelblondes, hell-, dunkelbraunes Haar braune, blaue, grüne,<br>graue Augen</div>
                 <div class="divider"></div>
                 <div class="label">braunes, schwarzes Haar<br>braune Augen</div>
                 <div class="divider"></div>
@@ -100,21 +99,8 @@
             
             <!-- SPF Wert über dem Bild -->
             <div id="cremeSPF"></div>
-
-            <!-- UV-Index und Protection Message --> 
         </div>
-
-        <div class="waves">
-            <div class="wave wave1"></div>
-            <div class="wave wave2"></div>
-            <div class="wave wave3"></div>
-            <div class="wave wave4"></div>
-    <div id="cremewellen">
-        <img src="grafiken/Sonnencreme.png">
-    </div>
-          </div>
-
-          
+      
 
 
     <div id="yesterdayUVIndexDisplay"></div>   

@@ -116,6 +116,13 @@ document.getElementById("calculateBtn").addEventListener("click", async function
     const skinType = getSelectedSkinTypeFromSlider(); 
     const route = selectedRoute;
 
+    // Überprüfen, ob eine Route ausgewählt wurde
+    if (!route) {
+        document.getElementById("result").innerHTML = `<p>Bitte wähle zuerst eine Route aus.</p>`;
+        console.error("Keine Route ausgewählt.");
+        return; // Beende die Funktion, wenn keine Route ausgewählt ist
+    }
+
     console.log(`Berechnung gestartet: Hauttyp ${skinType}, Route ${route}`);
 
     const distance = getDistance(route);

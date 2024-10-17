@@ -4,8 +4,8 @@ require 'config.php';
 //header json
 header('Content-Type: application/json');
 
-// get date and time for yesterday at noon
-$yesterday_noon = date('Y-m-d H:i:s', strtotime("yesterday noon"));
+// Berechne die Zeit 24 Stunden vor der aktuellen Zeit
+$time_24_hours_ago = date('Y-m-d H:i:s', strtotime("-24 hours"));
 
 // Hole die Route von den GET-Parametern
 $route = isset($_GET['route']) ? $_GET['route'] : null;
@@ -23,8 +23,7 @@ try {
                 FROM flow_daten 
                 WHERE ((latitude = 46.748428 AND longitude = 7.626299) -- Thun
                 OR (latitude = 46.947922 AND longitude = 7.444609)) -- Bern
-                AND DATE(erstellt_am) = DATE(:yesterday_noon)
-                AND HOUR(erstellt_am) = 12
+                AND erstellt_am BETWEEN :time_24_hours_ago AND NOW()
                 ORDER BY erstellt_am DESC LIMIT 2
             ");
             break;
@@ -36,8 +35,7 @@ try {
                 FROM flow_daten 
                 WHERE ((latitude = 46.793495 AND longitude = 7.577903) -- Uttigen
                 OR (latitude = 46.947922 AND longitude = 7.444609)) -- Bern
-                AND DATE(erstellt_am) = DATE(:yesterday_noon)
-                AND HOUR(erstellt_am) = 12
+                AND erstellt_am BETWEEN :time_24_hours_ago AND NOW()
                 ORDER BY erstellt_am DESC LIMIT 2
             ");
             break;
@@ -49,8 +47,7 @@ try {
                 FROM flow_daten 
                 WHERE ((latitude = 46.947922 AND longitude = 7.444609) -- Bern
                 OR (latitude = 46.973849 AND longitude = 7.358384)) -- Wohlen
-                AND DATE(erstellt_am) = DATE(:yesterday_noon)
-                AND HOUR(erstellt_am) = 12
+                AND erstellt_am BETWEEN :time_24_hours_ago AND NOW()
                 ORDER BY erstellt_am DESC LIMIT 2
             ");
             break;
@@ -63,7 +60,7 @@ try {
     }
 
     // Bind the parameter
-    $stmt->bindParam(':yesterday_noon', $yesterday_noon);
+    $stmt->bindParam(':time_24_hours_ago', $time_24_hours_ago);
 
     // Execute the statement
     $stmt->execute();
