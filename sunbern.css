@@ -173,9 +173,10 @@ body {
 
 /* Slider container */
 .slider-container {
-    width: 70%;
+    width: 100%;
     position: relative;
     text-align: center;
+    background-image: url(grafiken/Rectangle_3.png);
 }
 
 .slider {
@@ -245,3 +246,70 @@ body {
 #calculateBtn:hover {
     background-color: #EC7E32;
 }
+
+
+#resultatcreme {
+    display: flex;
+    justify-content: center; /* Zentriert das Bild horizontal */
+    align-items: center; /* Zentriert das Bild vertikal */
+    width: 100vw; /* Nimmt die volle Breite des Bildschirms */
+    height: 100vh; /* Passt die Höhe an die volle Höhe des Bildschirms an */
+    box-sizing: border-box;
+}
+
+#resultatcreme img {
+    max-width: 85vh; /* Bild passt sich an die Höhe des Bildschirms an */
+    max-height: 100%; /* Verhindert, dass das Bild die Höhe übersteigt */
+    height: auto; /* Bewahrt das Seitenverhältnis */
+    width: auto; /* Bewahrt das Seitenverhältnis */
+}
+#result {
+    position: absolute;
+    font-size: 4vh;
+    text-align: center;
+    z-index: 10;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 93vh;
+    margin: 50px;
+}
+
+x
+
+
+
+#resultatcreme {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    position: relative; /* Make the container a relative parent for absolute positioning */
+}
+
+#resultatcreme img {
+    max-width: 85vh; /* Ensure the image scales well */
+    max-height: 100%;
+    height: auto;
+    width: auto;
+    position: relative;
+    z-index: 1; /* Ensure the bottle image is beneath the text */
+}
+
+#cremeSPF {
+    position: absolute;
+    top: 55%; /* Adjust this value to perfectly place the text on the bottle */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    font-size: 2.5rem; /* Adjust size as needed */
+    font-weight: bold;
+    z-index: 2; /* Ensure the text is above the image */
+    padding: 10px;
+    border-radius: 10px; /* Optional: rounded background */
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20vh;
+}
+

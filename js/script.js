@@ -41,6 +41,7 @@ function processUVData(data) {
 function displayUVIndex(uvIndex) {
     const uvIndexDisplay = document.getElementById("uvIndexDisplay");
     uvIndexDisplay.innerHTML = `<p>Aktueller UV-Index: ${uvIndex}</p>`;
+    console.log(`UV-Index: ${uvIndex}`);
 }
 
 // Funktion zur Berechnung des Sonnenschutzfaktors (SPF)
@@ -76,23 +77,34 @@ document.getElementById("calculateBtn").addEventListener("click", async function
     const distance = getDistance(route);
     await fetchUVData(route); 
 
-    const sunscreenFactor = calculateSPF(distance, skinType);
+    const sunscreenFactor = calculateSPF(distance, skinType);  
+    console.log(`Berechneter Sonnenschutzfaktor: ${sunscreenFactor}`);
 
-    let protectionMessage = "";
+
+let protectionMessage = "";
+    let spfValue = ""; // Neues Variable für den SPF Wert
 
     if (sunscreenFactor < 20) {
         protectionMessage = "Kein Schutz erforderlich.";
+        spfValue = "0 SPF";
     } else if (sunscreenFactor < 30) {
         protectionMessage = "Es wäre empfehlenswert, sich mit 20 SPF einzucremen.";
+        spfValue = "20 SPF";
     } else if (sunscreenFactor < 60) {
         protectionMessage = "Es wäre empfehlenswert, sich mit 30 SPF einzucremen.";
+        spfValue = "30 SPF";
     } else {
         protectionMessage = "Es wäre empfehlenswert, sich mit 50 SPF einzucremen.";
+        spfValue = "50 SPF";
     }
 
-    document.getElementById("result").innerHTML = `<p>Empfohlener Sonnenschutzfaktor (SPF): ${sunscreenFactor.toFixed(2)}</p>`;
-    document.getElementById("result").innerHTML += `<p>${protectionMessage}</p>`;
+    // Text oberhalb der Sonnencreme
+    document.getElementById("result").innerHTML = `<p>${protectionMessage}</p>`;
+
+    // SPF Wert innerhalb/über dem Bild der Sonnencreme
+    document.getElementById("cremeSPF").innerHTML = `<p>${spfValue}</p>`;
 });
+
 
 // Funktion zur Bestimmung der Strecke basierend auf der Route
 function getDistance(route) {
