@@ -173,10 +173,9 @@ body {
 
 /* Slider container */
 .slider-container {
-    width: 100%;
+    width: 70%;
     position: relative;
     text-align: center;
-    background-image: url(grafiken/Rectangle_3.png);
 }
 
 .slider {
@@ -255,6 +254,7 @@ body {
     width: 100vw; /* Nimmt die volle Breite des Bildschirms */
     height: 100vh; /* Passt die Höhe an die volle Höhe des Bildschirms an */
     box-sizing: border-box;
+    background-image: url(grafiken/Rectangle_3.png);
 }
 
 #resultatcreme img {
@@ -272,10 +272,8 @@ body {
     padding-right: 2rem;
     padding-bottom: 93vh;
     margin: 50px;
+
 }
-
-x
-
 
 
 #resultatcreme {
