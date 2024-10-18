@@ -542,3 +542,606 @@ html stand 14.10 um 16:48 uhr
     <script src="js/script.js"></script>
 </body>
 </html>
+
+
+unload yesterday 17.10
+
+<?php
+// Include the database configuration
+require 'config.php';
+//header json
+header('Content-Type: application/json');
+
+// get date and time for yesterday at noon
+$yesterday_noon = date('Y-m-d H:i:s', strtotime("yesterday noon"));
+
+// Hole die Route von den GET-Parametern
+$route = isset($_GET['route']) ? $_GET['route'] : null;
+
+try {
+    // Create a new PDO instance
+    $pdo = new PDO($dsn, $username, $password, $options);
+
+    // Setze die SQL-Abfrage basierend auf der Route
+    switch ($route) {
+        case 'thun-bern':
+            // Abfrage für Thun (46.748428, 7.626299) und Bern (46.947922, 7.444609)
+            $stmt = $pdo->prepare("
+                SELECT latitude, longitude, now_uvi, erstellt_am 
+                FROM flow_daten 
+                WHERE ((latitude = 46.748428 AND longitude = 7.626299) -- Thun
+                OR (latitude = 46.947922 AND longitude = 7.444609)) -- Bern
+                AND DATE(erstellt_am) = DATE(:yesterday_noon)
+                AND HOUR(erstellt_am) = 12
+                ORDER BY erstellt_am DESC LIMIT 2
+            ");
+            break;
+
+        case 'uttigen-bern':
+            // Abfrage für Uttigen (46.793495, 7.577903) und Bern (46.947922, 7.444609)
+            $stmt = $pdo->prepare("
+                SELECT latitude, longitude, now_uvi, erstellt_am 
+                FROM flow_daten 
+                WHERE ((latitude = 46.793495 AND longitude = 7.577903) -- Uttigen
+                OR (latitude = 46.947922 AND longitude = 7.444609)) -- Bern
+                AND DATE(erstellt_am) = DATE(:yesterday_noon)
+                AND HOUR(erstellt_am) = 12
+                ORDER BY erstellt_am DESC LIMIT 2
+            ");
+            break;
+
+        case 'bern-wohlen':
+            // Abfrage für Bern (46.947922, 7.444609) und Wohlen (46.973849, 7.358384)
+            $stmt = $pdo->prepare("
+                SELECT latitude, longitude, now_uvi, erstellt_am 
+                FROM flow_daten 
+                WHERE ((latitude = 46.947922 AND longitude = 7.444609) -- Bern
+                OR (latitude = 46.973849 AND longitude = 7.358384)) -- Wohlen
+                AND DATE(erstellt_am) = DATE(:yesterday_noon)
+                AND HOUR(erstellt_am) = 12
+                ORDER BY erstellt_am DESC LIMIT 2
+            ");
+            break;
+
+        default:
+            // Unbekannte Route
+            http_response_code(400);
+            echo json_encode(['error' => 'Ungültige Route']);
+            exit;
+    }
+
+    // Bind the parameter
+    $stmt->bindParam(':yesterday_noon', $yesterday_noon);
+
+    // Execute the statement
+    $stmt->execute();
+
+    // Fetch all the results
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Output the data as JSON
+    echo json_encode($data);
+
+} catch (PDOException $e) {
+    // Handle the error
+    http_response_code(500);
+    echo json_encode(['error' => $e->getMessage()]);
+}
+?>
+
+
+media
+
+
+
+media screen 18.10
+
+
+@media screen and (max-width: 768px) {
+    body {
+        background-size: contain; /* Adjust background for mobile devices */
+        padding: 0;
+        margin: 0;
+    }
+
+    h1 {
+        font-size: 3rem; /* Reduce font size */
+        padding-top: 0; /* Remove the excessive padding-top */
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Reduce font size for mobile */
+        margin-bottom: 2vh; /* Adjust margin */
+        text-align: center;
+    }
+
+    /* Adjust the waves section for mobile */
+    .waves {
+        height: 100vh; /* Reduce wave height for mobile */
+        margin-top: 20px; /* Adjust top margin */
+    }
+
+    #bigtext {
+        font-size: 2vh; /* Reduce font size */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin: 5px 0; /* Adjust margins */
+    }
+
+    #wegetext {
+        font-size: 3vh; /* Reduce font size */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin: 10px;
+    }
+
+    #Wege {
+
+        padding-bottom: 8vh;
+
+
+    }
+
+    /* Make map container responsive */
+    #map-container {
+        width: 90%; /* Increase width to fit mobile screens */
+        height: auto; /* Auto adjust height */
+        margin: auto;
+    }
+
+    .map-point img {
+        width: 30px; /* Resize map points */
+        height: 30px;
+    }
+
+    #hauttyp {
+        font-size: 5vh; /* Reduce font size */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin: 10px; /* Adjust margins for mobile */
+    }
+
+    .slider-container {
+        padding: 4vh 0; /* Reduce padding */
+        width: 90vw; /* Ensure the slider fits within the screen */
+    }
+
+    .slider {
+        width: 100%; /* Full-width slider */
+        height: 40px; /* Adjust slider height */
+    }
+
+    .labels {
+        margin-left: 5vh;
+        margin-right: 5vh;
+        margin-top: 3vh;
+        margin-bottom: 4vh;
+    }
+
+    .label {
+        font-size: 0.8rem; /* Reduce font size for labels */
+    }
+
+    #calculateBtn {
+        width: 90%; /* Full-width button */
+        font-size: 20px;
+        padding: 10px;
+        margin: 0 auto; /* Center the button */
+    }
+
+    /* Adjust image sizes for mobile */
+    #resultatcreme img {
+        max-width: 80vw; /* Limit image width */
+        max-height: 60vh; /* Limit image height */
+    }
+
+    #cremeSPF {
+        font-size: 3rem; /* Adjust text size */
+        padding: 0 10px; /* Padding adjustments */
+        text-align: center;
+    }
+
+
+}
+
+/* Extra small screens (max-width: 480px) */
+@media screen and (max-width: 480px) {
+
+
+
+    h1 {
+        font-size: 2rem; /* Further reduce the font size */
+        padding-top: 0;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.2rem; /* Smaller font size */
+        margin-bottom: 2vh;
+        text-align: center;
+    }
+
+    #hauttyp {
+        font-size: 4vh; /* Adjusted font size */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin: 10px;
+        padding-bottom: 2rem;
+    }
+
+    .slider-container {
+        padding: 3vh 0;
+        width: 100%; /* Full-width slider container */
+    }
+
+    .slider {
+        width: 100%; /* Full-width slider */
+        height: 35px; /* Reduced height for smaller screens */
+        
+    }
+
+    .slider-hauttyp {
+        font-size: 1vh;
+
+    }
+
+    #wegetext {
+    font-size: 4vh;
+    }
+
+    #Wege {
+     padding-top: 0;
+
+    }
+
+    #mySlider {
+        padding-left: 5vh;        /* Optional: Padding innen */
+        padding-right: 5vh;       /* Optional: Padding innen */
+        width: 90%;                /* Setzen Sie die Breite auf 90% */
+        height: 25px;              /* Setzen Sie die Höhe auf 45px */
+        margin: 0 auto;           /* Zentriert den Slider innerhalb seines Containers */
+        max-width: 400px;         /* Setzen Sie eine maximale Breite für den Slider */
+        box-sizing: border-box;    /* Stellen Sie sicher, dass Padding und Border zur Breite zählen */
+    }
+
+    .label {
+        font-size: 0.5rem; /* Reduce label size */
+    }
+
+
+    .divider {
+        width: 5px; /* Adjust divider width */
+
+
+    }
+
+
+    #calculateBtn {
+        width: 30%;
+        font-size: 0.7rem; /* Smaller font size */
+        padding: 10px; /* Adjust padding */
+        margin: 0 auto;
+    }
+
+    #resultatcreme {
+ 
+        margin: 10px 0;
+        padding: 5px 0;
+
+
+    }
+
+
+    #resultatcreme img {
+        max-width: 75vw; /* Adjust image size */
+        max-height: 50vh;
+    }
+
+    #cremeSPF {
+        font-size: 2.5rem; /* Further reduce text size */
+        padding: 0 10px;
+        text-align: center;
+    }
+
+    #sunbernverhindern {
+        padding-top: 0;
+        padding-bottom: 0; 
+    }
+
+    .map-point {
+        width: 15px;         /* Kleinere Größe für mobile Ansichten */
+        height: 15px;        /* Kleinere Höhe für mobile Ansichten */
+    }
+
+    .map-point img {
+        width: 100%;         /* Weiterhin 100% der Containerbreite */
+        height: auto;        /* Höhe anpassen */
+    }
+
+    .map-point_point-3 {
+        top: 77%;
+        left: 45%;
+        transform: translate(-50%, -50%); 
+    }
+
+    .map-point_point-4 {
+        top: 103%;
+        left: 40%;
+        transform: translate(-50%, -50%); 
+    }
+
+
+    #sunbernverhindern-text {
+
+        padding-top: 0;
+        padding-bottom: 3vh;
+    }
+    #sunbernverhindern-text h3 {
+    font-size: 2rem;
+
+    }
+
+    #sunbernverhindern-text p {
+    font-size: 1rem;
+    
+    }
+
+    #yesterdayUVIndexDisplay p {
+    font-size: 1.5rem;
+
+    }
+
+    #cremeSPF {
+
+    font-size: 2rem;
+    padding-bottom: 10vh;
+
+    }
+
+    #result {
+    margin-top: 14vh;
+    margin-bottom: 0vh;
+
+    }
+
+    .spacer {
+        height: 1vh;
+    }
+
+    #result p {
+        font-size: 2rem;
+        padding-bottom: 3vh;
+        
+        
+        }
+
+    #spfverstehen {
+
+    padding-top: -15vh;
+
+
+    }
+
+    #spfverstehen h3 {
+
+    font-size: 2rem;
+    padding-top: -50vh;
+    margin-top: -3vh;
+
+    }
+
+    #spfverstehen p {
+
+        font-size: 1rem;
+        
+        }
+
+
+    .waves {
+        height: 100vh; /* Full height of the viewport */
+        margin-top: 0; /* Adjust top margin */
+        z-index: 5;
+        padding-bottom: -8vh;
+
+    }
+
+    #home img {
+
+    padding-left: 1vh;
+    max-width: 12vw;
+    max-height: 8vh;
+    width: auto;
+    height: auto;
+
+    }
+
+    #sunbernverhindern {
+        padding-top: 60vh;
+
+    }
+
+    #bigtext {
+        margin-right: 0;
+        padding-bottom: -12vh;
+
+
+
+    }
+
+
+}
+
+
+
+/* iPads and larger phones */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    h1 {
+        font-size: 4rem; /* Adjust font size */
+        padding-top: 0;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 3vh;
+    }
+
+    #wegetext {
+        font-size: 4vh; /* Adjust size */
+        margin: 20px;
+    }
+
+    #map-container {
+        width: 80%;
+        height: auto;
+        margin: auto;
+    }
+
+    .map-point img {
+        width: 35px; /* Adjust image sizes */
+        height: 35px;
+    }
+
+    .slider-container {
+        width: 95vw;
+        padding-top: 5vh;
+        padding-bottom: 10vh;
+    }
+
+    .slider {
+        width: 100%;
+        height: 45px; /* Slightly larger for tablets */
+    }
+
+    .label {
+        font-size: 1rem;
+    }
+
+    #calculateBtn {
+        font-size: 22px; /* Slightly larger for tablets */
+        padding: 12px;
+        margin: 0 auto;
+    }
+
+    #resultatcreme img {
+        max-width: 80vw;
+        max-height: 70vh;
+    }
+
+    #cremeSPF {
+        font-size: 3.5rem;
+        padding: 0 15px;
+    }
+}
+
+
+18.10 nur 768
+
+@media screen and (max-width: 768px) {
+    body {
+        background-size: contain; /* Adjust background for mobile devices */
+        padding: 0;
+        margin: 0;
+    }
+
+    h1 {
+        font-size: 3rem; /* Reduce font size */
+        padding-top: 0; /* Remove the excessive padding-top */
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Reduce font size for mobile */
+        margin-bottom: 2vh; /* Adjust margin */
+        text-align: center;
+    }
+
+    /* Adjust the waves section for mobile */
+    .waves {
+        height: 100vh; /* Reduce wave height for mobile */
+        margin-top: 20px; /* Adjust top margin */
+    }
+
+    #bigtext {
+        font-size: 2vh; /* Reduce font size */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin: 5px 0; /* Adjust margins */
+    }
+
+    #wegetext {
+        font-size: 3vh; /* Reduce font size */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin: 10px;
+    }
+
+    #Wege {
+
+        padding-bottom: 8vh;
+
+
+    }
+
+    /* Make map container responsive */
+    #map-container {
+        width: 90%; /* Increase width to fit mobile screens */
+        height: auto; /* Auto adjust height */
+        margin: auto;
+    }
+
+    .map-point img {
+        width: 30px; /* Resize map points */
+        height: 30px;
+    }
+
+    #hauttyp {
+        font-size: 5vh; /* Reduce font size */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin: 10px; /* Adjust margins for mobile */
+    }
+
+    .slider-container {
+        padding: 4vh 0; /* Reduce padding */
+        width: 90vw; /* Ensure the slider fits within the screen */
+    }
+
+    .slider {
+        width: 100%; /* Full-width slider */
+        height: 40px; /* Adjust slider height */
+    }
+
+    .labels {
+        margin-left: 5vh;
+        margin-right: 5vh;
+        margin-top: 3vh;
+        margin-bottom: 4vh;
+    }
+
+    .label {
+        font-size: 0.8rem; /* Reduce font size for labels */
+    }
+
+    #calculateBtn {
+        width: 90%; /* Full-width button */
+        font-size: 20px;
+        padding: 10px;
+        margin: 0 auto; /* Center the button */
+    }
+
+    /* Adjust image sizes for mobile */
+    #resultatcreme img {
+        max-width: 80vw; /* Limit image width */
+        max-height: 60vh; /* Limit image height */
+    }
+
+    #cremeSPF {
+        font-size: 3rem; /* Adjust text size */
+        padding: 0 10px; /* Padding adjustments */
+        text-align: center;
+    }
+
+
+}

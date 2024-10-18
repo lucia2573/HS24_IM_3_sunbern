@@ -286,3 +286,10 @@ function setRoute(startPoint) {
 points.thun.addEventListener('click', () => setRoute("thun"));
 points.uttigen.addEventListener('click', () => setRoute("uttigen"));
 points.bern.addEventListener('click', () => setRoute("bern"));
+
+
+// Funktionalität für den Button "SPF berechnen"
+document.getElementById("calculateBtn").onclick = function() {
+    // Sanftes Scrollen zum Ergebnisbereich
+    document.getElementById("resultatcreme").scrollIntoView({ behavior: 'smooth' });
+};
