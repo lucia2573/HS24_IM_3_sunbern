@@ -81,7 +81,7 @@ margin-bottom: 4vh;
 
 #hauttyp {
     position: relative;
-    font-size: 6vh;
+    font-size: 8vh;
     padding-left: 2rem;
     padding-right: 2rem; 
     margin: 100px; /* margin-top erhöht */
@@ -114,15 +114,23 @@ margin-bottom: 4vh;
 #sunbernverhindern {
     z-index: 10;
     text-align: center;
-    margin-left: 2rem;
-    margin-right: 2rem;
-    margin-top: -10rem;
+    margin-top: -30rem;
     padding-top: 100vh;
     font-family: Rethink Sans;
+    z-index: 20;
+}
+
+#sunbernverhindern-text {
+    background-image: url(grafiken/Rectangle_6.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: -25vh;
+    padding-bottom: 20vh;
+    
 }
 
 #sunbernverhindern p {
-
     margin-left: 2rem;
     margin-right: 2rem;
     font-size: 2rem;
@@ -132,6 +140,7 @@ margin-bottom: 4vh;
 #sunbernverhindern h3 {
     font-family: Kranky;
     font-size: 4rem;
+    padding-top: 30vh;
 }
 
 
@@ -161,7 +170,7 @@ margin-bottom: 4vh;
 
 #wegetext {
     position: relative;
-    font-size: 6vh;
+    font-size: 8vh;
     text-align: center;
     z-index: 10;
     padding-left: 2rem;
@@ -248,15 +257,17 @@ margin-bottom: 4vh;
 
 /* Slider container */
 .slider-container {
-    width: 1243;
     position: relative;
     text-align: center;
     font-family: Rethink Sans;
     align-items: center;
     padding-top: 8vh;
-    padding-bottom: 10vh;
+    padding-bottom: 16vh;
     justify-content: center;  
+    background-image: url(grafiken/Rectangle_3.png);
+   
 }
+
 
 .slider {
     -webkit-appearance: none;
@@ -269,6 +280,7 @@ margin-bottom: 4vh;
     border-radius: 25px;
     margin-bottom: 20px;
     justify-content: center;
+    
 }
 
 .slider::-webkit-slider-thumb {
@@ -287,6 +299,11 @@ margin-bottom: 4vh;
     background-color: #333;
     border-radius: 50%;
     cursor: pointer;
+}
+
+.spacer {
+    height: 18vh; /* Adjust this value to fit your spacing needs */
+    background: transparent; /* Make sure this doesn't interfere with your layout */
 }
 
 .labels {
@@ -360,7 +377,7 @@ margin-bottom: 4vh;
     padding-bottom: 102vh;
     margin: 50px;
     font-family: Kranky;
-    padding-top: -8vh;
+    padding-top: -vh;
 
 }
 
@@ -500,148 +517,231 @@ position: absolute;
 z-index: 10;
 }
 
+/* Hover effect for enlarging the text */
+h1:hover, #sunbernverhindern h3:hover {
+    transform: scale(1.1); /* Increase the size slightly */
+    transition: transform 0.3s ease; /* Smooth transition */
+    cursor: pointer; /* Change the cursor to pointer */
+}
 
 
-/* Responsive Styles for Mobile Devices */
+/* Mobile Responsiveness for 768px and smaller screens */
 @media screen and (max-width: 768px) {
     body {
+        background-size: contain; /* Adjust background for mobile devices */
         padding: 0;
         margin: 0;
-        background-size: contain; /* Background für mobile Devices anpassen */
     }
 
     h1 {
-        font-size: 3rem; /* Kleinere Schriftgröße für H1 */
-        padding-top: 0; /* Padding entfernen */
-        text-align: center; /* Text zentrieren */
+        font-size: 3rem; /* Reduce font size */
+        padding-top: 0; /* Remove the excessive padding-top */
+        text-align: center;
     }
 
     h2 {
-        font-size: 1.5rem; /* Kleinere Schriftgröße für H2 */
-        margin-bottom: 2vh; /* Weniger margin-bottom für H2 */
+        font-size: 1.5rem; /* Reduce font size for mobile */
+        margin-bottom: 2vh; /* Adjust margin */
+        text-align: center;
     }
 
-    #bilder {
-        height: auto; /* Höhe automatisch anpassen */
-        flex-direction: column; /* Bilder untereinander anordnen */
-        position: relative; /* Relative Positionierung */
-        padding-bottom: 20px; /* Abstände unten hinzufügen */
-    }
-
-    #bilder img {
-        width: 100%;
-        height: auto;
-        position: relative; /* Relative Positionierung für bessere Responsiveness */
-        margin-bottom: -2vh; /* Minimale negative margin für Überlappung */
+    /* Adjust the waves section for mobile */
+    .waves {
+        height: 100vh; /* Reduce wave height for mobile */
+        margin-top: 20px; /* Adjust top margin */
     }
 
     #bigtext {
-        font-size: 2vh; /* Kleinere Schriftgröße */
+        font-size: 2vh; /* Reduce font size */
         padding-left: 1rem;
         padding-right: 1rem;
-        margin: 5px 0; /* Weniger Margin, oben weniger Abstand */
+        margin: 5px 0; /* Adjust margins */
     }
 
     #wegetext {
-        font-size: 3vh;
+        font-size: 3vh; /* Reduce font size */
         padding-left: 1rem;
         padding-right: 1rem;
         margin: 10px;
     }
 
-    #hauttyp {
-        font-size: 5vh; /* Kleinere Schriftgröße */
-        padding-left: 1rem;
-        padding-right: 1rem;
-        margin: 10px; /* Weniger Margin für mobile Geräte */
-    }
-
-    #textbox {
-        padding-top: 10rem; /* Padding für mobile Geräte anpassen */
-        margin: 20px; /* Weniger Margin */
-        text-align: center; /* Text zentrieren */
-    }
-
+    /* Make map container responsive */
     #map-container {
-        width: 90%; /* Breite für mobile Geräte erhöhen */
-        height: auto; /* Höhe automatisch anpassen */
-        margin: auto; /* Zentrieren */
-    }
-
-    #map {
-        width: 100%; /* Map auf volle Breite setzen */
-        height: auto; /* Höhe automatisch anpassen */
-    }
-
-    #sunbernverhindern p {
-        font-size: 1.5rem; /* Kleinere Schriftgröße */
-        margin: 10px; /* Weniger Margin */
-    }
-
-    #sunbernverhindern h3 {
-        font-size: 3rem; /* Kleinere Schriftgröße */
-        margin: 10px; /* Weniger Margin */
-    }
-
-    .slider-container {
-        width: 100%; /* Slider-Container auf volle Breite */
-        padding-top: 4vh; /* Weniger Padding */
-        padding-bottom: 4vh; /* Weniger Padding */
-    }
-
-    .slider {
-        width: 100%; /* Slider auf volle Breite */
-        height: 40px; /* Höhe anpassen */
-        margin: 0; /* Margin entfernen */
-    }
-
-    .labels {
-        margin-left: 5vh; /* Weniger Margin */
-        margin-right: 5vh; /* Weniger Margin */
-        margin-top: 3vh; /* Abstand nach oben */
-        margin-bottom: 4vh; /* Abstand nach unten */
-    }
-
-    #spfverstehen {
-        padding: 0; /* Kein Padding */
-        margin: 0; /* Kein Margin */
-    }
-
-    .label {
-        font-size: 0.8rem; /* Kleinere Schriftgröße für Labels */
-    }
-
-    #calculateBtn {
-        width: 90%; /* Button auf volle Breite */
-        font-size: 20px; /* Kleinere Schriftgröße */
-        padding: 10px; /* Weniger Padding */
-        margin: 0 auto; /* Zentrieren */
-    }
-
-    #resultatcreme img {
-        max-width: 80vw; /* Bildbreite anpassen */
-        max-height: 60vh; /* Höhe anpassen */
-    }
-
-    #cremeSPF {
-        font-size: 3rem; /* Kleinere Schriftgröße für SPF-Text */
-        padding: 0 10px; /* Padding hinzufügen */
-        text-align: center; /* Text zentrieren */
-    }
-
-    .waves {
-        height: 100vh; /* Wellenhöhe auf 100vh anpassen */
-        margin-top: 20px; /* Erhöhe den Abstand nach oben, um die Wellen nach unten zu verschieben */
-    }
-    
-
-    /* Anpassen der map-point Klassen für responsives Verhalten */
-    .map-point {
-        width: 5%; /* Breite für die Map-Punkte anpassen */
+        width: 90%; /* Increase width to fit mobile screens */
+        height: auto; /* Auto adjust height */
+        margin: auto;
     }
 
     .map-point img {
-        width: 20px; /* Größe der Map-Punkte anpassen */
-        height: 20px; /* Höhe anpassen */
+        width: 30px; /* Resize map points */
+        height: 30px;
+    }
+
+    #hauttyp {
+        font-size: 5vh; /* Reduce font size */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin: 10px; /* Adjust margins for mobile */
+    }
+
+    .slider-container {
+        padding: 4vh 0; /* Reduce padding */
+        width: 90vw; /* Ensure the slider fits within the screen */
+    }
+
+    .slider {
+        width: 100%; /* Full-width slider */
+        height: 40px; /* Adjust slider height */
+    }
+
+    .labels {
+        margin-left: 5vh;
+        margin-right: 5vh;
+        margin-top: 3vh;
+        margin-bottom: 4vh;
+    }
+
+    .label {
+        font-size: 0.8rem; /* Reduce font size for labels */
+    }
+
+    #calculateBtn {
+        width: 90%; /* Full-width button */
+        font-size: 20px;
+        padding: 10px;
+        margin: 0 auto; /* Center the button */
+    }
+
+    /* Adjust image sizes for mobile */
+    #resultatcreme img {
+        max-width: 80vw; /* Limit image width */
+        max-height: 60vh; /* Limit image height */
+    }
+
+    #cremeSPF {
+        font-size: 3rem; /* Adjust text size */
+        padding: 0 10px; /* Padding adjustments */
+        text-align: center;
+    }
+}
+
+/* Extra small screens (max-width: 480px) */
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 2.5rem; /* Further reduce the font size */
+        padding-top: 0;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.2rem; /* Smaller font size */
+        margin-bottom: 2vh;
+        text-align: center;
+    }
+
+    /* Map point adjustments for very small screens */
+    .map-point img {
+        width: 25px; /* Smaller map points */
+        height: 25px;
+    }
+
+    #hauttyp {
+        font-size: 4vh; /* Adjusted font size */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin: 10px;
+    }
+
+    .slider-container {
+        padding: 3vh 0;
+        width: 85vw; /* Adjusted slider width for small screens */
+    }
+
+    .slider {
+        width: 100%; /* Full-width slider */
+        height: 35px; /* Reduced height for smaller screens */
+    }
+
+    .label {
+        font-size: 0.7rem; /* Reduce label size */
+    }
+
+    #calculateBtn {
+        width: 90%;
+        font-size: 18px; /* Smaller font size */
+        padding: 10px; /* Adjust padding */
+        margin: 0 auto;
+    }
+
+    #resultatcreme img {
+        max-width: 75vw; /* Adjust image size */
+        max-height: 50vh;
+    }
+
+    #cremeSPF {
+        font-size: 2.5rem; /* Further reduce text size */
+        padding: 0 10px;
+        text-align: center;
+    }
+}
+
+/* iPads and larger phones */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    h1 {
+        font-size: 4rem; /* Adjust font size */
+        padding-top: 0;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 3vh;
+    }
+
+    #wegetext {
+        font-size: 4vh; /* Adjust size */
+        margin: 20px;
+    }
+
+    #map-container {
+        width: 80%;
+        height: auto;
+        margin: auto;
+    }
+
+    .map-point img {
+        width: 35px; /* Adjust image sizes */
+        height: 35px;
+    }
+
+    .slider-container {
+        width: 95vw;
+        padding-top: 5vh;
+        padding-bottom: 10vh;
+    }
+
+    .slider {
+        width: 100%;
+        height: 45px; /* Slightly larger for tablets */
+    }
+
+    .label {
+        font-size: 1rem;
+    }
+
+    #calculateBtn {
+        font-size: 22px; /* Slightly larger for tablets */
+        padding: 12px;
+        margin: 0 auto;
+    }
+
+    #resultatcreme img {
+        max-width: 80vw;
+        max-height: 70vh;
+    }
+
+    #cremeSPF {
+        font-size: 3.5rem;
+        padding: 0 15px;
     }
 }

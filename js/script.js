@@ -218,9 +218,10 @@ const points = {
 
 function resetPoints() {
     Object.values(points).forEach(point => {
-        point.style.filter = "grayscale(100%)";
+        point.style.filter = "grayscale(100%) brightness(50%)"; // Grauer und dunkler
     });
 }
+
 
 function setRoute(startPoint) {
     selectedRoute = `${routes[startPoint].start}-${routes[startPoint].end}`;
@@ -230,6 +231,55 @@ function setRoute(startPoint) {
 
     points[startPoint].style.filter = "none"; 
     points[routes[startPoint].end].style.filter = "none";
+}
+
+// Add click event listeners to points
+points.thun.addEventListener('click', () => setRoute("thun"));
+points.uttigen.addEventListener('click', () => setRoute("uttigen"));
+points.bern.addEventListener('click', () => setRoute("bern"));
+
+
+/// Smooth scroll for "Do not get sunbernt"
+document.querySelector('h1').addEventListener('click', function() {
+    // Scroll to the h3 inside the sunbernverhindern section
+    document.querySelector('#sunbernverhindern h3').scrollIntoView({ behavior: 'smooth' });
+});
+
+// Smooth scroll for "Wie du ein Sunbern verhindern kannst"
+document.querySelector('#sunbernverhindern h3').addEventListener('click', function() {
+    document.getElementById('Wege').scrollIntoView({ behavior: 'smooth' });
+});
+
+// Texte der Punkte
+const pointsText = {
+    thun: document.querySelector('.map-point_point-1 p'),
+    uttigen: document.querySelector('.map-point_point-2 p'),
+    bern: document.querySelector('.map-point_point-3 p'),
+    wohlen: document.querySelector('.map-point_point-4 p')
+};
+
+function resetPoints() {
+    Object.values(points).forEach(point => {
+        point.style.filter = "grayscale(100%) brightness(50%)"; // Grauer und dunkler
+    });
+    Object.values(pointsText).forEach(text => {
+        text.style.visibility = "hidden"; // Text der nicht ausgewählten Punkte ausblenden
+    });
+}
+
+function setRoute(startPoint) {
+    selectedRoute = `${routes[startPoint].start}-${routes[startPoint].end}`;
+    console.log(`Ausgewählte Route: ${selectedRoute}`);
+
+    resetPoints();
+
+    // Markiere die ausgewählten Punkte und zeige den Text an
+    points[startPoint].style.filter = "none"; 
+    points[routes[startPoint].end].style.filter = "none";
+    
+    // Sichtbarkeit der Texte für die ausgewählten Punkte
+    pointsText[startPoint].style.visibility = "visible";
+    pointsText[routes[startPoint].end].style.visibility = "visible";
 }
 
 // Add click event listeners to points
